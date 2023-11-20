@@ -1,0 +1,116 @@
+.card{
+  display: flex;
+  flex-direction: column;
+  background: white;
+  margin: 0 auto;
+  max-width: 912px;
+  width: 100%;
+  padding: 15px 15px 0px 15px;
+  border-radius: 3px;
+  margin-top: 32px;
+}
+
+.content{display: flex; gap: 20px;}
+
+.avaliation{
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 24px 0px;
+}
+
+.avaliationInfo{
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 10px;
+}
+
+.avaliationValue{
+  color: var(--blackDefault);
+  font-weight: 700;
+  padding-left: 5px;
+}
+
+.avaliationCount{
+    color: var(--grayDefault);
+}
+
+.avaliation a{
+  color: var(--orangeDefault);
+  text-decoration: underline;
+}
+
+.description{
+  font-size: 13px;
+  line-height: 1.4rem;
+  color: var(--grayDefault);
+}
+
+.selectionsIntro{
+  padding: 24px 0px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--grayDefault);
+}
+
+.selectionsIntro h4{
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.selectionsIntro  p{
+  font-size: 0.8rem;
+}
+
+.selectionsForm{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.selectionsForm label{
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--blackDefault);
+  font-weight: 500;
+  padding: 5px 0px;
+
+}
+.selectionsForm span{
+  display: flex;
+  gap: 10px;
+}
+
+
+
+.actions{
+  width: 100%;
+  padding: 20px 0px 25px 0px;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.actions button{
+  width: 100%;
+  max-width: 266px;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  background: #791D8F;
+  align-items: center;
+  color: white;
+  padding: 0px 10px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: unset;
+  border: unset;
+  border-radius: 5px;
+}
+
+.actions select{
+  width: 60px;
+  border-radius: 5px;
+}
