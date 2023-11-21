@@ -6,21 +6,27 @@ import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
   const [sizeSelect, setSizeSelect] = useState<number | null>();
-  const [complementsSelected, setCompelmentsSelected] = useState<number[] | null>();
+  const [complementsSelected, setCompelmentsSelected] = useState<
+    number[] | null
+  >();
   const [totalValue, setTotalValue] = useState<number | null>();
+  const [activeTab, setActiveTab] = useState<string>("sizes");
   const { pedidosData } = useDataContext();
+  const tabs = ["sizes", "fruits", "complements"];
 
-  function handleSize(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>) {
     const { type, value, checked } = event.target;
     const numericValue = parseFloat(value);
 
     if (type === "checkbox") {
       if (checked) {
+        //Pega os valores anteriores se houver e adiciona o novo valor selecionado
         setCompelmentsSelected((prevValues) => [
           ...(prevValues ?? []),
           numericValue,
         ]);
       } else {
+        //Remove item do array se for igual ao valor já presente
         setCompelmentsSelected((prevValues) =>
           prevValues ? prevValues.filter((value) => value !== numericValue) : []
         );
@@ -28,6 +34,7 @@ export function CardOrder() {
     } else if (type === "radio") {
       setSizeSelect(numericValue);
     }
+    handleSubmitValues();
   }
 
   function handleSubmitValues() {
@@ -39,13 +46,20 @@ export function CardOrder() {
       }
       const valueTotal = valueComplements + valueSize;
       setTotalValue(valueTotal);
-      console.log(totalValue)
     }
   }
 
-  useEffect(()=>{
-    console.log(totalValue)
-  },[totalValue])
+  useEffect(() => {
+    if (totalValue) {
+      setTotalValue(totalValue)
+    }
+  }, [totalValue]);
+
+  function nextTab() {
+    const currentIndex = tabs.indexOf(activeTab);
+    const nextIndex = (currentIndex + 1) % tabs.length;
+    setActiveTab(tabs[nextIndex])
+  }
 
   return (
     <div className={styles.card}>
@@ -77,7 +91,7 @@ export function CardOrder() {
             rechear do seu jeito! Obs: não trocamos nem adicionamos itens a esse
             copo!
           </p>
-          {pedidosData?.sizes ? (
+          {pedidosData?.sizes  && activeTab === 'sizes' ? (
             <>
               <div className={styles.selectionsIntro}>
                 <span>
@@ -97,7 +111,7 @@ export function CardOrder() {
                         name="size"
                         id={size}
                         value={pedidosData.sizes.prices[index]}
-                        onChange={(event) => handleSize(event)}
+                        onChange={(event) => handleValuesInput(event)}
                       />
                     </span>
                   </label>
@@ -105,9 +119,9 @@ export function CardOrder() {
               </form>
             </>
           ) : (
-            <p>Carregando dados...</p>
+            null
           )}
-          {pedidosData?.fruits ? (
+          {pedidosData?.fruits && activeTab === "fruits" ? (
             <>
               <div className={styles.selectionsIntro}>
                 <span>
@@ -127,17 +141,15 @@ export function CardOrder() {
                         name={`fruit_${index}`}
                         id={fruit}
                         value={pedidosData.fruits.prices[index]}
-                        onChange={(event) => handleSize(event)}
+                        onChange={(event) => handleValuesInput(event)}
                       />
                     </span>
                   </label>
                 ))}
               </form>
             </>
-          ) : (
-            <p>Carregando dados...</p>
-          )}
-          {pedidosData?.complements ? (
+          ) : null}
+          {pedidosData?.complements && activeTab === "complements" ? (
             <>
               <div className={styles.selectionsIntro}>
                 <span>
@@ -157,27 +169,35 @@ export function CardOrder() {
                         name={`complement_${index}`}
                         id={complement}
                         value={pedidosData.complements.prices[index]}
-                        onChange={(event) => handleSize(event)}
+                        onChange={(event) => handleValuesInput(event)}
                       />
                     </span>
                   </label>
                 ))}
               </form>
             </>
-          ) : (
-            <p>Carregando dados...</p>
-          )}
+          ) : null}
         </article>
       </div>
       <div className={styles.actions}>
         <select name="" id="">
           <option value="1">1</option>
         </select>
-        <button onClick={handleSubmitValues}>
+        <button onClick={nextTab}>
           Avança
-          {sizeSelect ? <p>R${sizeSelect}</p> : ""}
+          {sizeSelect ? <p>R${totalValue}</p> : ""}
         </button>
       </div>
+      <article styles={styles.checkout}>
+        <div>
+        <Image
+          src="/assets/produto.png"
+          width={64}
+          height={64}
+          alt="Produto"
+        />
+        </div>
+      </article>
     </div>
   );
 }
