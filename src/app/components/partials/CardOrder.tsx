@@ -1,22 +1,51 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
 import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
-  const [sizeSelect, setSizeSelect] = useState<number>();
-  const { pedidosData, setSizeValueOrder } = useDataContext();
-  // const pedidosSize = pedidosData?sizes[0];
+  const [sizeSelect, setSizeSelect] = useState<number | null>();
+  const [complementsSelected, setCompelmentsSelected] = useState<number[] | null>();
+  const [totalValue, setTotalValue] = useState<number | null>();
+  const { pedidosData } = useDataContext();
 
   function handleSize(event: React.ChangeEvent<HTMLInputElement>) {
-    const valueSelect = event.target.value;
-    const numericValue = parseFloat(valueSelect);
-    console.log(numericValue)
-    setSizeSelect(numericValue);
+    const { type, value, checked } = event.target;
+    const numericValue = parseFloat(value);
+
+    if (type === "checkbox") {
+      if (checked) {
+        setCompelmentsSelected((prevValues) => [
+          ...(prevValues ?? []),
+          numericValue,
+        ]);
+      } else {
+        setCompelmentsSelected((prevValues) =>
+          prevValues ? prevValues.filter((value) => value !== numericValue) : []
+        );
+      }
+    } else if (type === "radio") {
+      setSizeSelect(numericValue);
+    }
   }
 
-  // function onSubmitSize() {}
+  function handleSubmitValues() {
+    let valueComplements = 0;
+    let valueSize = sizeSelect;
+    if (complementsSelected && valueSize) {
+      for (let i = 0; i < complementsSelected?.length; i++) {
+        valueComplements += complementsSelected[i];
+      }
+      const valueTotal = valueComplements + valueSize;
+      setTotalValue(valueTotal);
+      console.log(totalValue)
+    }
+  }
+
+  useEffect(()=>{
+    console.log(totalValue)
+  },[totalValue])
 
   return (
     <div className={styles.card}>
@@ -94,11 +123,11 @@ export function CardOrder() {
                     <span>
                       +R${pedidosData.fruits.prices[index]}
                       <input
-                        type="radio"
+                        type="checkbox"
                         name={`fruit_${index}`}
                         id={fruit}
                         value={pedidosData.fruits.prices[index]}
-                        // onChange={(event) => handleSize(event)}
+                        onChange={(event) => handleSize(event)}
                       />
                     </span>
                   </label>
@@ -124,11 +153,11 @@ export function CardOrder() {
                     <span>
                       +R${pedidosData.complements.prices[index]}
                       <input
-                        type="radio"
+                        type="checkbox"
                         name={`complement_${index}`}
                         id={complement}
                         value={pedidosData.complements.prices[index]}
-                        // onChange={(event) => handleSize(event)}
+                        onChange={(event) => handleSize(event)}
                       />
                     </span>
                   </label>
@@ -144,7 +173,7 @@ export function CardOrder() {
         <select name="" id="">
           <option value="1">1</option>
         </select>
-        <button>
+        <button onClick={handleSubmitValues}>
           Avança
           {sizeSelect ? <p>R${sizeSelect}</p> : ""}
         </button>
