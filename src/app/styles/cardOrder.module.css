@@ -66,7 +66,6 @@
 .selectionsForm{
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 .selectionsForm label{
   display: flex;
@@ -74,15 +73,14 @@
   font-size: 0.8rem;
   color: var(--blackDefault);
   font-weight: 500;
-  padding: 5px 0px;
-
+  padding: 14px 0px;
+  cursor: pointer;
 }
+
 .selectionsForm span{
   display: flex;
   gap: 10px;
 }
-
-
 
 .actions{
   width: 100%;
@@ -108,9 +106,11 @@
   box-shadow: unset;
   border: unset;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .actions select{
   width: 60px;
   border-radius: 5px;
+  cursor: pointer;
 }

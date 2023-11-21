@@ -2,9 +2,12 @@
 import {useState} from "react";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
+import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
   const[ sizeSelect, setSizeSelect] = useState<string>()
+  const { pedidosData } = useDataContext();
+  console.log(pedidosData)
 
   function handleSize(event :React.ChangeEvent<HTMLSelectElement>){
     const valueSelect = event.target.value;
@@ -47,21 +50,21 @@ export function CardOrder() {
             <p> Pequeno - 300ml</p>
             <span>
               R$18
-              <input type="radio" name="size" id="small" value={18} onChange={handleSize} />
+              <input type="radio" name="size" id="small" value={18} onChange={() => handleSize} />
             </span>
           </label>
           <label htmlFor="mid">
             <p>Médio - 500ml</p>
             <span>
               R$20
-              <input type="radio" name="size" id="mid" value={20} onChange={handleSize}/>
+              <input type="radio" name="size" id="mid" value={20} onChange={()=> handleSize}/>
             </span>
           </label>
           <label htmlFor="big">
             <p> Grande - 700ml</p>
             <span>
               R$22
-              <input type="radio" name="size" id="big" value={22} onChange={handleSize} />
+              <input type="radio" name="size" id="big" value={22} onChange={()=>handleSize} />
             </span>
           </label>
         </form>
@@ -71,8 +74,8 @@ export function CardOrder() {
         <select name="" id="">
           <option value="1">1</option>
         </select>
-        <button>Avançar
-          <p>R${sizeSelect}</p>
+        <button>Avança
+          {sizeSelect ? <p>R${sizeSelect}</p> : ''}
         </button>
       </div>
     </div>
