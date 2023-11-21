@@ -1,6 +1,7 @@
 "use client";
 import { ReactNode, useEffect, useState, createContext, useContext } from "react";
 import { fetch } from "../api/axios";
+import { DataApiSchema } from '../api/schema'
 
 interface DataApi {
   sizes: {
@@ -34,8 +35,9 @@ export function Context({ children }: DataContextProps) {
       try {
         const response = await fetch.get("/pedido");
         const data = response.data;
-        console.log(data[0])
-        setPedidosData(data[0]);
+        const validatedDataApi = DataApiSchema.parse(data[0])
+        console.log(validatedDataApi)
+        setPedidosData(validatedDataApi);
       } catch (error) {
         console.error('Erro ao buscar pedidos:', error);
       }
