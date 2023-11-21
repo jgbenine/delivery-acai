@@ -3,10 +3,20 @@ import { ReactNode, useEffect, useState, createContext, useContext } from "react
 import { fetch } from "../api/axios";
 
 interface DataApi {
-  size: string[];
-  items: string[];
-  prices: number[];
-  deliveryTime: number[];
+  sizes: {
+    options: string[];
+    prices: number[];
+  };
+  fruits: {
+    options: string[];
+    prices: number[];
+  };
+  complements: {
+    options: string[];
+    prices: number[];
+  };
+  timeDelivery: number[];
+  id: string;
 }
 
 interface DataContextProps {
@@ -24,7 +34,8 @@ export function Context({ children }: DataContextProps) {
       try {
         const response = await fetch.get("/pedido");
         const data = response.data;
-        setPedidosData(data);
+        console.log(data[0])
+        setPedidosData(data[0]);
       } catch (error) {
         console.error('Erro ao buscar pedidos:', error);
       }
