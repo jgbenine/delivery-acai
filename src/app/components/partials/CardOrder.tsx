@@ -5,57 +5,114 @@ import Image from "next/image";
 import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
-  const [sizeSelect, setSizeSelect] = useState<number | null>();
-  const [complementsSelected, setCompelmentsSelected] = useState<number[] | null>();
-  const [totalValue, setTotalValue] = useState<number | null>();
+  const [sizeSelect, setSizeSelect] = useState<number | undefined>();
+  const [complementsSelected, setCompelmentsSelected] = useState<number[] | undefined>();
+  const [fruitsSelected, setFruitsSelected] = useState<number[] | undefined>();
+  const [totalValue, setTotalValue] = useState<number | undefined>();
   const [activeTab, setActiveTab] = useState<string>("sizes");
   const { pedidosData } = useDataContext();
-  const tabs = ["sizes", "fruits", "complements", "checkout"];
 
+
+  //Sempre que se altera alguma caixa de seleção sendo checkbox e radio essa função ocorre
+  //Verifica se é checkbox se sim, ela adiciona o novo valor em um array se ele foi selecionado
+  //e remove deixando vazio se caso ele existir e foi desselecionado
+  //Se for Radio ele apenas adiciona o valor dentro do estado
   function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>) {
     const { type, value, checked } = event.target;
     const numericValue = parseFloat(value);
 
     if (type === "checkbox") {
       if (checked) {
-        //Pega os valores anteriores se houver e adiciona o novo valor selecionado
-        setCompelmentsSelected((prevValues) => [
-          ...(prevValues ?? []),
-          numericValue,
-        ]);
+        // Adiciona o novo valor selecionado na categoria correspondente
+        if (activeTab === "fruits") {
+          setFruitsSelected((prevValues) => [
+            ...(prevValues ?? []),
+            numericValue,
+          ]);
+        } else if (activeTab === "complements") {
+          setCompelmentsSelected((prevValues) => [
+            ...(prevValues ?? []),
+            numericValue,
+          ]);
+        }
       } else {
-        //Remove item do array se for igual ao valor já presente
-        setCompelmentsSelected((prevValues) =>
-          prevValues ? prevValues.filter((value) => value !== numericValue) : []
-        );
+        // Remove item do array se for igual ao valor já presente na categoria correspondente
+        if (activeTab === "fruits") {
+          setFruitsSelected((prevValues) =>
+            prevValues ? prevValues.filter((value) => value !== numericValue): []
+          );
+        } else if (activeTab === "complements") {
+          setCompelmentsSelected((prevValues) =>
+            prevValues ? prevValues.filter((value) => value !== numericValue): []
+          );
+        }
       }
     } else if (type === "radio") {
       setSizeSelect(numericValue);
     }
   }
 
-  useEffect(()=>{
+  //UseEffect para realizar a soma dos valores sempre que os valores mudarem
+  useEffect(() => {
     function sumValues() {
-      let valueComplements = 0;
-      let valueSize = sizeSelect;
-      if (complementsSelected && valueSize) {
-        for (let i = 0; i < complementsSelected?.length; i++) {
-          valueComplements += complementsSelected[i];
-        }
-        const valueTotal = valueComplements + valueSize;
-        setTotalValue(valueTotal);
-      }
+      // Soma dos valores de frutas
+      const valueFruits = fruitsSelected ? fruitsSelected.reduce((acc, val) => acc + val, 0): 0;
+      // Soma dos valores de complementos
+      const valueComplements = complementsSelected ? complementsSelected.reduce((acc, val) => acc + val, 0): 0;
+      // Soma dos valores de tamanho
+      const valueSize = sizeSelect || 0;
+      // Calcula o valor total
+      const valueTotal = valueFruits + valueComplements + valueSize;
+      // Define o valor total no estado
+      setTotalValue(valueTotal);
     }
-    sumValues()
-  },[sizeSelect, totalValue, complementsSelected])
+    sumValues();
+  }, [sizeSelect, totalValue, complementsSelected, fruitsSelected]);
 
 
+  //Lógica para navegação por Tabs
+  const tabs = ["sizes", "fruits", "complements", "checkout"];
   function nextTab() {
+    //Verifica se foram definidos os valores na tab.
+    const isValidTab = (value: number[] | number | undefined) => value !== undefined;
+    //Define o valor atual do index dentro de activeTab
+    //Lógica de próxima tab adicionado ao próximo item na lista.
+    //seta o próximo valor como nextIndex.
     const currentIndex = tabs.indexOf(activeTab);
     const nextIndex = (currentIndex + 1) % tabs.length;
-    setActiveTab(tabs[nextIndex]);
+    const nextTab = tabs[nextIndex];
+
+    //Switch opções para tab que quando é chamado verifica se a lógica permite que a próxima tab seja chamada.
+    switch (activeTab) {
+      case "sizes":
+        checkAndSetNextTab(sizeSelect, nextTab);
+        break;
+      case "fruits":
+        checkAndSetNextTab(fruitsSelected, nextTab);
+        break;
+      case "complements":
+        checkAndSetNextTab(complementsSelected, nextTab);
+        break;
+      case "checkout":
+        checkAndSetNextTab(totalValue, nextTab);
+        break;
+      default:
+        console.log("Tab inválida");
+    }
+
+    //Verifica e seta nova tab verificando se isValidTab existe e é true permitindo a set da próxima tab
+    function checkAndSetNextTab(
+      value: number[] | number | undefined,
+      nextTab: string
+    ) {
+      if (isValidTab(value)) {
+        setActiveTab(nextTab);
+      } else {
+        console.log("selecione um valor");
+      }
+    }
   }
-  
+
   return (
     <div className={styles.card}>
       {activeTab !== "checkout" ? (
