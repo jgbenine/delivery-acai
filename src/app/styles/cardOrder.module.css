@@ -1,4 +1,4 @@
-.card{
+.card {
   display: flex;
   flex-direction: column;
   background: white;
@@ -10,64 +10,71 @@
   margin-top: 32px;
 }
 
-.content{display: flex; gap: 20px;}
-
-.avaliation{
+.gridContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.content{
+  display: flex;
+  gap: 20px;
+}
+.avaliation {
   display: flex;
   align-items: center;
   font-size: 0.9rem;
   padding: 24px 0px;
 }
 
-.avaliationInfo{
+.avaliationInfo {
   display: flex;
   align-items: center;
   font-size: 0.9rem;
   gap: 10px;
 }
 
-.avaliationValue{
+.avaliationValue {
   color: var(--blackDefault);
   font-weight: 700;
   padding-left: 5px;
 }
 
-.avaliationCount{
-    color: var(--grayDefault);
+.avaliationCount {
+  color: var(--grayDefault);
 }
 
-.avaliation a{
+.avaliation a {
   color: var(--orangeDefault);
   text-decoration: underline;
 }
 
-.description{
+.description {
   font-size: 13px;
   line-height: 1.4rem;
   color: var(--grayDefault);
 }
 
-.selectionsIntro{
+.selectionsIntro {
   padding: 24px 0px;
   display: flex;
   justify-content: space-between;
   color: var(--grayDefault);
 }
 
-.selectionsIntro h4{
+.selectionsIntro h4 {
   font-size: 1.1rem;
   font-weight: 600;
 }
 
-.selectionsIntro  p{
+.selectionsIntro p {
   font-size: 0.8rem;
 }
 
-.selectionsForm{
+.selectionsForm {
   display: flex;
   flex-direction: column;
 }
-.selectionsForm label{
+.selectionsForm label {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
@@ -77,12 +84,12 @@
   cursor: pointer;
 }
 
-.selectionsForm span{
+.selectionsForm span {
   display: flex;
   gap: 10px;
 }
 
-.actions{
+.actions {
   width: 100%;
   padding: 20px 0px 25px 0px;
   display: flex;
@@ -90,13 +97,13 @@
   justify-content: flex-end;
 }
 
-.actions button{
+.actions button {
   width: 100%;
   max-width: 266px;
   display: flex;
   justify-content: space-between;
   height: 40px;
-  background: #791D8F;
+  background: #791d8f;
   align-items: center;
   color: white;
   padding: 0px 10px;
@@ -109,8 +116,53 @@
   cursor: pointer;
 }
 
-.actions select{
+.actions select {
   width: 60px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.checkout {
+   color: var(--blackDefault);
+}
+
+.checkout img{
+  border-radius: 5px;
+}
+
+.gridCheckout {
+  display: flex;
+  gap: 15px;
+}
+.introCheckout{
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #D9D9D9;
+}
+
+.checkout ul{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout ul li {
+  list-style: none;
+}
+
+.checkout h4{
+  color: var(--grayDefault);
+}
+.checkout p {
+  font-size: 12px;
+  color: var(--grayDefault);
+}
+
+
+
+.checkoutDelivery{
+  padding: 20px 0px;
+  display: flex;
+  justify-content: space-between;
 }

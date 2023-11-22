@@ -12,7 +12,7 @@ export function CardOrder() {
   const [totalValue, setTotalValue] = useState<number | null>();
   const [activeTab, setActiveTab] = useState<string>("sizes");
   const { pedidosData } = useDataContext();
-  const tabs = ["sizes", "fruits", "complements"];
+  const tabs = ["sizes", "fruits", "complements", "checkout"];
 
   function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>) {
     const { type, value, checked } = event.target;
@@ -49,155 +49,185 @@ export function CardOrder() {
     }
   }
 
-  useEffect(() => {
-    if (totalValue) {
-      setTotalValue(totalValue)
-    }
-  }, [totalValue]);
-
   function nextTab() {
     const currentIndex = tabs.indexOf(activeTab);
     const nextIndex = (currentIndex + 1) % tabs.length;
-    setActiveTab(tabs[nextIndex])
+    setActiveTab(tabs[nextIndex]);
   }
 
   return (
     <div className={styles.card}>
-      <div className={styles.content}>
-        <Image
-          src="/assets/produto.png"
-          width={412}
-          height={352}
-          alt="Produto"
-        />
-        <article>
-          <h2>Açaí Natural</h2>
-          <div className={styles.avaliation}>
+      {activeTab !== 'checkout' ? (
+        <div className={styles.gridContent}>
+          <div className={styles.content}>
             <Image
-              src="/assets/estrela.png"
-              width={17}
-              height={15}
-              alt="estrela"
+              src="/assets/produto.png"
+              width={412}
+              height={352}
+              alt="Produto"
             />
-            <span className={styles.avaliationInfo}>
-              <p className={styles.avaliationValue}>4.5</p>
-              <p className={styles.avaliationCount}>(30+)</p>
-              <a href="">Ver Avaliações</a>
-            </span>
+            <article>
+              <h2>Açaí Natural</h2>
+              <div className={styles.avaliation}>
+                <Image
+                  src="/assets/estrela.png"
+                  width={17}
+                  height={15}
+                  alt="estrela"
+                />
+                <span className={styles.avaliationInfo}>
+                  <p className={styles.avaliationValue}>4.5</p>
+                  <p className={styles.avaliationCount}>(30+)</p>
+                  <a href="">Ver Avaliações</a>
+                </span>
+              </div>
+              <p className={styles.description}>
+                Super Copo de 500 ml de Açaí Tradicional - Atenção: Contém
+                somente açaí puro! Ideal para quem gosta de aproveitar um açaí
+                puro ou rechear do seu jeito! Obs: não trocamos nem adicionamos
+                itens a esse copo!
+              </p>
+              {pedidosData?.sizes && activeTab === "sizes" ? (
+                <>
+                  <div className={styles.selectionsIntro}>
+                    <span>
+                      <h4>Escolha o tamanho</h4>
+                      <p>Escolha pelo menos 1 opção.</p>
+                    </span>
+                    <p>1/3</p>
+                  </div>
+                  <form className={styles.selectionsForm}>
+                    {pedidosData.sizes.options.map((size, index) => (
+                      <label key={index} htmlFor={size}>
+                        <p>{size}</p>
+                        <span>
+                          R${pedidosData.sizes.prices[index]}
+                          <input
+                            type="radio"
+                            name="size"
+                            id={size}
+                            value={pedidosData.sizes.prices[index]}
+                            onChange={(event) => handleValuesInput(event)}
+                          />
+                        </span>
+                      </label>
+                    ))}
+                  </form>
+                </>
+              ) : null}
+              {pedidosData?.fruits && activeTab === "fruits" ? (
+                <>
+                  <div className={styles.selectionsIntro}>
+                    <span>
+                      <h4>Escolha as frutas</h4>
+                      <p>Escolha pelo menos 1 opção.</p>
+                    </span>
+                    <p>2/3</p>
+                  </div>
+                  <form className={styles.selectionsForm}>
+                    {pedidosData.fruits.options.map((fruit, index) => (
+                      <label key={index} htmlFor={fruit}>
+                        <p>{fruit}</p>
+                        <span>
+                          +R${pedidosData.fruits.prices[index]}
+                          <input
+                            type="checkbox"
+                            name={`fruit_${index}`}
+                            id={fruit}
+                            value={pedidosData.fruits.prices[index]}
+                            onChange={(event) => handleValuesInput(event)}
+                          />
+                        </span>
+                      </label>
+                    ))}
+                  </form>
+                </>
+              ) : null}
+              {pedidosData?.complements && activeTab === "complements" ? (
+                <>
+                  <div className={styles.selectionsIntro}>
+                    <span>
+                      <h4>Escolha os complementos</h4>
+                      <p>Escolha pelo menos 1 opção.</p>
+                    </span>
+                    <p>3/3</p>
+                  </div>
+                  <form className={styles.selectionsForm}>
+                    {pedidosData.complements.options.map(
+                      (complement, index) => (
+                        <label key={index} htmlFor={complement}>
+                          <p>{complement}</p>
+                          <span>
+                            +R${pedidosData.complements.prices[index]}
+                            <input
+                              type="checkbox"
+                              name={`complement_${index}`}
+                              id={complement}
+                              value={pedidosData.complements.prices[index]}
+                              onChange={(event) => handleValuesInput(event)}
+                            />
+                          </span>
+                        </label>
+                      )
+                    )}
+                  </form>
+                </>
+              ) : null}
+            </article>
           </div>
-          <p className={styles.description}>
-            Super Copo de 500 ml de Açaí Tradicional - Atenção: Contém somente
-            açaí puro! Ideal para quem gosta de aproveitar um açaí puro ou
-            rechear do seu jeito! Obs: não trocamos nem adicionamos itens a esse
-            copo!
-          </p>
-          {pedidosData?.sizes  && activeTab === 'sizes' ? (
-            <>
-              <div className={styles.selectionsIntro}>
-                <span>
-                  <h4>Escolha o tamanho</h4>
-                  <p>Escolha pelo menos 1 opção.</p>
-                </span>
-                <p>1/3</p>
-              </div>
-              <form className={styles.selectionsForm}>
-                {pedidosData.sizes.options.map((size, index) => (
-                  <label key={index} htmlFor={size}>
-                    <p>{size}</p>
-                    <span>
-                      R${pedidosData.sizes.prices[index]}
-                      <input
-                        type="radio"
-                        name="size"
-                        id={size}
-                        value={pedidosData.sizes.prices[index]}
-                        onChange={(event) => handleValuesInput(event)}
-                      />
-                    </span>
-                  </label>
-                ))}
-              </form>
-            </>
-          ) : (
-            null
-          )}
-          {pedidosData?.fruits && activeTab === "fruits" ? (
-            <>
-              <div className={styles.selectionsIntro}>
-                <span>
-                  <h4>Escolha as frutas</h4>
-                  <p>Escolha pelo menos 1 opção.</p>
-                </span>
-                <p>2/3</p>
-              </div>
-              <form className={styles.selectionsForm}>
-                {pedidosData.fruits.options.map((fruit, index) => (
-                  <label key={index} htmlFor={fruit}>
-                    <p>{fruit}</p>
-                    <span>
-                      +R${pedidosData.fruits.prices[index]}
-                      <input
-                        type="checkbox"
-                        name={`fruit_${index}`}
-                        id={fruit}
-                        value={pedidosData.fruits.prices[index]}
-                        onChange={(event) => handleValuesInput(event)}
-                      />
-                    </span>
-                  </label>
-                ))}
-              </form>
-            </>
-          ) : null}
-          {pedidosData?.complements && activeTab === "complements" ? (
-            <>
-              <div className={styles.selectionsIntro}>
-                <span>
-                  <h4>Escolha os complementos</h4>
-                  <p>Escolha pelo menos 1 opção.</p>
-                </span>
-                <p>3/3</p>
-              </div>
-              <form className={styles.selectionsForm}>
-                {pedidosData.complements.options.map((complement, index) => (
-                  <label key={index} htmlFor={complement}>
-                    <p>{complement}</p>
-                    <span>
-                      +R${pedidosData.complements.prices[index]}
-                      <input
-                        type="checkbox"
-                        name={`complement_${index}`}
-                        id={complement}
-                        value={pedidosData.complements.prices[index]}
-                        onChange={(event) => handleValuesInput(event)}
-                      />
-                    </span>
-                  </label>
-                ))}
-              </form>
-            </>
-          ) : null}
-        </article>
-      </div>
-      <div className={styles.actions}>
-        <select name="" id="">
-          <option value="1">1</option>
-        </select>
-        <button onClick={nextTab}>
-          Avança
-          {sizeSelect ? <p>R${totalValue}</p> : ""}
-        </button>
-      </div>
-      <article styles={styles.checkout}>
-        <div>
-        <Image
-          src="/assets/produto.png"
-          width={64}
-          height={64}
-          alt="Produto"
-        />
+          <div className={styles.actions}>
+            <select name="" id="">
+              <option value="1">1</option>
+            </select>
+            <button onClick={nextTab}>
+              Avança
+              {sizeSelect ? <p>R${totalValue}</p> : ""}
+            </button>
+          </div>
+        </div>
+      )
+      : (
+      <article className={styles.checkout}>
+        <div className={styles.introCheckout}>
+          <div className={styles.gridCheckout}>
+            <Image
+              src="/assets/produto.png"
+              width={80}
+              height={80}
+              alt="Produto"
+            />
+            <div>
+              <ul>
+                <li>
+                  <p>1 Item</p>
+                </li>
+                <h4>Açai Natural</h4>
+                <li>
+                  <p>Médio</p>
+                </li>
+                <li>
+                  <p>Morango</p>
+                </li>
+                <li>
+                  <p>Garona, Paçoca</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p>#4184548</p>
+        </div>
+        <div className={styles.checkoutDelivery}>
+          <span>
+            <p>previsão de entrega</p>
+            <h4>15:55 - 16:10</h4>
+          </span>
+          <span>
+            <p>valor total</p>
+            <h4>R${totalValue}</h4>
+          </span>
         </div>
       </article>
+      )}
     </div>
   );
 }
