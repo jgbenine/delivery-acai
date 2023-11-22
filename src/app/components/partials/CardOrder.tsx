@@ -6,9 +6,7 @@ import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
   const [sizeSelect, setSizeSelect] = useState<number | null>();
-  const [complementsSelected, setCompelmentsSelected] = useState<
-    number[] | null
-  >();
+  const [complementsSelected, setCompelmentsSelected] = useState<number[] | null>();
   const [totalValue, setTotalValue] = useState<number | null>();
   const [activeTab, setActiveTab] = useState<string>("sizes");
   const { pedidosData } = useDataContext();
@@ -34,30 +32,33 @@ export function CardOrder() {
     } else if (type === "radio") {
       setSizeSelect(numericValue);
     }
-    handleSubmitValues();
   }
 
-  function handleSubmitValues() {
-    let valueComplements = 0;
-    let valueSize = sizeSelect;
-    if (complementsSelected && valueSize) {
-      for (let i = 0; i < complementsSelected?.length; i++) {
-        valueComplements += complementsSelected[i];
+  useEffect(()=>{
+    function sumValues() {
+      let valueComplements = 0;
+      let valueSize = sizeSelect;
+      if (complementsSelected && valueSize) {
+        for (let i = 0; i < complementsSelected?.length; i++) {
+          valueComplements += complementsSelected[i];
+        }
+        const valueTotal = valueComplements + valueSize;
+        setTotalValue(valueTotal);
       }
-      const valueTotal = valueComplements + valueSize;
-      setTotalValue(valueTotal);
     }
-  }
+    sumValues()
+  },[sizeSelect, totalValue, complementsSelected])
+
 
   function nextTab() {
     const currentIndex = tabs.indexOf(activeTab);
     const nextIndex = (currentIndex + 1) % tabs.length;
     setActiveTab(tabs[nextIndex]);
   }
-
+  
   return (
     <div className={styles.card}>
-      {activeTab !== 'checkout' ? (
+      {activeTab !== "checkout" ? (
         <div className={styles.gridContent}>
           <div className={styles.content}>
             <Image
@@ -181,52 +182,51 @@ export function CardOrder() {
             </select>
             <button onClick={nextTab}>
               Avança
-              {sizeSelect ? <p>R${totalValue}</p> : ""}
+              {totalValue ? <p>R${totalValue}</p> : <p>R${sizeSelect}</p>}
             </button>
           </div>
         </div>
-      )
-      : (
-      <article className={styles.checkout}>
-        <div className={styles.introCheckout}>
-          <div className={styles.gridCheckout}>
-            <Image
-              src="/assets/produto.png"
-              width={80}
-              height={80}
-              alt="Produto"
-            />
-            <div>
-              <ul>
-                <li>
-                  <p>1 Item</p>
-                </li>
-                <h4>Açai Natural</h4>
-                <li>
-                  <p>Médio</p>
-                </li>
-                <li>
-                  <p>Morango</p>
-                </li>
-                <li>
-                  <p>Garona, Paçoca</p>
-                </li>
-              </ul>
+      ) : (
+        <article className={styles.checkout}>
+          <div className={styles.introCheckout}>
+            <div className={styles.gridCheckout}>
+              <Image
+                src="/assets/produto.png"
+                width={80}
+                height={80}
+                alt="Produto"
+              />
+              <div>
+                <ul>
+                  <li>
+                    <p>1 Item</p>
+                  </li>
+                  <h4>Açai Natural</h4>
+                  <li>
+                    <p>Médio</p>
+                  </li>
+                  <li>
+                    <p>Morango</p>
+                  </li>
+                  <li>
+                    <p>Garona, Paçoca</p>
+                  </li>
+                </ul>
+              </div>
             </div>
+            <p>#4184548</p>
           </div>
-          <p>#4184548</p>
-        </div>
-        <div className={styles.checkoutDelivery}>
-          <span>
-            <p>previsão de entrega</p>
-            <h4>15:55 - 16:10</h4>
-          </span>
-          <span>
-            <p>valor total</p>
-            <h4>R${totalValue}</h4>
-          </span>
-        </div>
-      </article>
+          <div className={styles.checkoutDelivery}>
+            <span>
+              <p>previsão de entrega</p>
+              <h4>15:55 - 16:10</h4>
+            </span>
+            <span>
+              <p>valor total</p>
+              <h4>R${totalValue}</h4>
+            </span>
+          </div>
+        </article>
       )}
     </div>
   );
