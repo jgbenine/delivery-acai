@@ -9,20 +9,15 @@ export function CardOrder() {
   const [activeTab, setActiveTab] = useState<string>("sizes");
   const {
     pedidosData,
-    setSizeSelectValue,
-    sizeSelectValue,
-    complementsSelectValue,
-    setCompelmentsSelectValue,
-    fruitsSelectValue,
-    setFruitsSelectValue,
     setDataSelectInfo,
     setValueSelectInfo,
+    valueSelectInfo
   } = useDataContext();
 
   //Sempre que se altera alguma caixa de seleção sendo checkbox e radio essa função ocorre
   //Verifica se é checkbox se sim, ela adiciona o novo valor em um array se ele foi selecionado
   //e remove deixando vazio se caso ele existir e foi desselecionado
-  //Se for Radio ele apenas adiciona o valor dentro do estado
+  //Se for Radio ele apenas substitui o valor
   function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string) {
     const { type, checked } = event.target;
 
@@ -46,25 +41,14 @@ export function CardOrder() {
   }
 
   //UseEffect para realizar a soma dos valores sempre que os valores mudarem
-  // useEffect(() => {
-  //   function sumValues() {
-  //     // Soma dos valores de frutas
-  //     const valueFruits = fruitsSelectValue
-  //       ? fruitsSelectValue.reduce((acc, val) => acc + val, 0)
-  //       : 0;
-  //     // Soma dos valores de complementos
-  //     const valueComplements = complementsSelectValue
-  //       ? complementsSelectValue.reduce((acc, val) => acc + val, 0)
-  //       : 0;
-  //     // Soma dos valores de tamanho
-  //     const valueSize = sizeSelectValue || 0;
-  //     // Calcula o valor total
-  //     const valueTotal = valueFruits + valueComplements + sizeSelectValue;
-  //     // Define o valor total no estado
-  //     setTotalValue(valueTotal);
-  //   }
-  //   sumValues();
-  // }, [totalValue, complementsSelectValue, fruitsSelectValue, sizeSelectValue]);
+  useEffect(() => {
+    function sumValues() {
+      // Soma dos valores
+      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
+      setTotalValue(sumValuesInfo);
+    }
+    sumValues();
+  }, [totalValue, valueSelectInfo]);
 
   //Lógica para navegação por Tabs
   const tabs = ["sizes", "fruits", "complements", "checkout"];
@@ -80,22 +64,22 @@ export function CardOrder() {
     const nextTab = tabs[nextIndex];
 
     //Switch opções para tab que quando é chamado verifica se a lógica permite que a próxima tab seja chamada.
-    // switch (activeTab) {
-    //   case "sizes":
-    //     checkAndSetNextTab(sizeSelectValue, nextTab);
-    //     break;
-    //   case "fruits":
-    //     checkAndSetNextTab(fruitsSelectValue, nextTab);
-    //     break;
-    //   case "complements":
-    //     checkAndSetNextTab(complementsSelectValue, nextTab);
-    //     break;
-    //   case "checkout":
-    //     checkAndSetNextTab(totalValue, nextTab);
-    //     break;
-    //   default:
-    //     console.log("Tab inválida");
-    // }
+    switch (activeTab) {
+      case "sizes":
+        checkAndSetNextTab(sizeSelectValue, nextTab);
+        break;
+      case "fruits":
+        checkAndSetNextTab(fruitsSelectValue, nextTab);
+        break;
+      case "complements":
+        checkAndSetNextTab(complementsSelectValue, nextTab);
+        break;
+      case "checkout":
+        checkAndSetNextTab(totalValue, nextTab);
+        break;
+      default:
+        console.log("Tab inválida");
+    }
 
     //Verifica e seta nova tab verificando se isValidTab existe e é true permitindo a set da próxima tab
     function checkAndSetNextTab(
@@ -240,7 +224,7 @@ export function CardOrder() {
             </select>
             <button onClick={nextTab}>
               Avança
-              {totalValue ? <p>R${totalValue}</p> : <p>R${sizeSelectValue}</p>}
+              {totalValue ? <p>R${totalValue}</p> : <p>R$0</p>}
             </button>
           </div>
         </div>
