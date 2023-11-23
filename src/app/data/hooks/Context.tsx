@@ -75,7 +75,7 @@ export function Context({ children }: DataContextProps) {
 
   useEffect(() => {
     console.log("selected value", valueSelectInfo);
-    console.log("DATA:", dataSelectInfo);
+    console.log("DATA info:", dataSelectInfo);
   }, [valueSelectInfo, dataSelectInfo]);
 
   return (
