@@ -11,31 +11,36 @@ export function CardOrder() {
     pedidosData,
     setDataSelectInfo,
     setValueSelectInfo,
-    valueSelectInfo
+    valueSelectInfo,
   } = useDataContext();
 
-  //Sempre que se altera alguma caixa de seleção sendo checkbox e radio essa função ocorre
-  //Verifica se é checkbox se sim, ela adiciona o novo valor em um array se ele foi selecionado
-  //e remove deixando vazio se caso ele existir e foi desselecionado
-  //Se for Radio ele apenas substitui o valor
-  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string) {
-    const { type, checked } = event.target;
+  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string){
+    const { type, checked, value } = event.target;
+    const numericValue = parseFloat(value);
 
-    // Atualiza o estado específico (valueSelectInfo) baseado no tipo
-    if (type === "radio") {
-      setValueSelectInfo(checked ? [parseFloat(event.target.value)] : []);
-    }
+    setValueSelectInfo((prevValues) => {
+      if (type === "checkbox") {
+        // Adiciona ou remove valores numéricos mantendo os existentes
+        return checked ? [...(prevValues || []), numericValue]: (prevValues || []).filter((item) => item !== numericValue);
+      } else if (type === "radio" && checked) {
+        // Para input radio, mantém apenas o valor atualmente selecionado
+        return [numericValue];
+      } else {
+        return prevValues || [];
+      }
+    });
 
     // Atualiza o estado geral (dataSelectInfo) com base no tipo
-    setDataSelectInfo((prevValues) => {
+    setDataSelectInfo((prevInfo) => {
       if (type === "checkbox") {
         if (checked && textInfo) {
-          return [...(prevValues || []), textInfo];
+          return checked ? [...(prevInfo || []), textInfo] : (prevInfo || []).filter((item) => item !== textInfo);
         } else {
-          return (prevValues || []).filter((item) => item !== textInfo);
+          return (prevInfo || []).filter((item) => item !== textInfo);
         }
       } else {
-        return checked ? [textInfo] : prevValues || [];
+        // Para radio buttons, adiciona ou remove o texto correspondente
+        return checked ? [textInfo] : prevInfo || [];
       }
     });
   }
@@ -44,7 +49,7 @@ export function CardOrder() {
   useEffect(() => {
     function sumValues() {
       // Soma dos valores
-      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
+      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0 );
       setTotalValue(sumValuesInfo);
     }
     sumValues();
@@ -58,7 +63,6 @@ export function CardOrder() {
       value !== undefined;
     //Define o valor atual do index dentro de activeTab
     //Lógica de próxima tab adicionado ao próximo item na lista.
-    //seta o próximo valor como nextIndex.
     const currentIndex = tabs.indexOf(activeTab);
     const nextIndex = (currentIndex + 1) % tabs.length;
     const nextTab = tabs[nextIndex];
@@ -66,13 +70,13 @@ export function CardOrder() {
     //Switch opções para tab que quando é chamado verifica se a lógica permite que a próxima tab seja chamada.
     switch (activeTab) {
       case "sizes":
-        checkAndSetNextTab(sizeSelectValue, nextTab);
+        checkAndSetNextTab(valueSelectInfo[0], nextTab);
         break;
       case "fruits":
-        checkAndSetNextTab(fruitsSelectValue, nextTab);
+        checkAndSetNextTab(valueSelectInfo[1], nextTab);
         break;
       case "complements":
-        checkAndSetNextTab(complementsSelectValue, nextTab);
+        checkAndSetNextTab(valueSelectInfo[2], nextTab);
         break;
       case "checkout":
         checkAndSetNextTab(totalValue, nextTab);
@@ -89,7 +93,7 @@ export function CardOrder() {
       if (isValidTab(value)) {
         setActiveTab(nextTab);
       } else {
-        console.log("selecione um valor");
+        console.log("selecione um valor para avançar o pedido");
       }
     }
   }
