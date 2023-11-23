@@ -29,11 +29,28 @@ a {
 }
 
 .containerMain {
+  display: flex;
+  justify-content: center;
   max-width: var(--max-width);
+  width: 100%;
+  padding: 0px 5px;
 }
 
-input[type="number"] {
-  -moz-appearance: textfield !important;
-  -webkit-appearance: none !important;
-  appearance: textfield !important;
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+  background:  #737373;
+}
+ 
+
+::-webkit-scrollbar-thumb {
+  background: var(--grayDefault);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
 }

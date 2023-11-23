@@ -2,23 +2,41 @@
   display: flex;
   flex-direction: column;
   background: white;
-  margin: 0 auto;
   max-width: 912px;
   width: 100%;
   padding: 15px 15px 0px 15px;
   border-radius: 3px;
-  margin-top: 32px;
+  margin-top: 35px;
 }
 
-.gridContent {
+.container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 .content{
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
+
+.introView{
+  text-align: center;
+}
+
+.wrapperImg{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.wrapperImg img{
+  height: 250px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+
 .avaliation {
   display: flex;
   align-items: center;
@@ -94,7 +112,6 @@
   padding: 20px 0px 25px 0px;
   display: flex;
   gap: 20px;
-  justify-content: flex-end;
 }
 
 .btnNext{
@@ -115,7 +132,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
 
 .quantityControl{
   display: flex;
@@ -141,3 +157,32 @@
   background: transparent;
   border: transparent;
 }
+
+@media(min-width:420px){
+ .wrapperImg img{
+  height: 350px;
+  max-width: 450px;
+ }
+
+ .actions{
+  justify-content: flex-end;
+}
+}
+
+@media(min-width:768px){
+  .content{
+    flex-direction: row;
+  }
+  .introView{
+    text-align: left;
+  }
+  .wrapperImg{
+    align-items: flex-start;
+  }
+  .wrapperImg{
+    margin: unset;
+  }
+}
+
+
+

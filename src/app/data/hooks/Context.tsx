@@ -66,18 +66,12 @@ export function Context({ children }: DataContextProps) {
   //UseEffect para realizar a soma dos valores sempre que os valores mudarem
   useEffect(() => {
     function sumValues() {
-      // Soma dos valores
       const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
       const totalValueInfo = sumValuesInfo * quantityValue;
       setTotalValue(totalValueInfo);
     }
     sumValues();
   }, [totalValue, valueSelectInfo, setTotalValue, quantityValue]);
-
-  useEffect(() => {
-    console.log("selected value", valueSelectInfo);
-    console.log("DATA info:", dataSelectInfo);
-  }, [valueSelectInfo, dataSelectInfo]);
 
   return (
     <DataContext.Provider
