@@ -5,76 +5,73 @@ import Image from "next/image";
 import { useDataContext } from "@/app/data/hooks/useContext";
 
 export function CardOrder() {
-  const [sizeSelect, setSizeSelect] = useState<number | undefined>();
-  const [complementsSelected, setCompelmentsSelected] = useState<number[] | undefined>();
-  const [fruitsSelected, setFruitsSelected] = useState<number[] | undefined>();
-  const [totalValue, setTotalValue] = useState<number | undefined>();
+  const [totalValue, setTotalValue] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<string>("sizes");
-  const { pedidosData } = useDataContext();
-
+  const {
+    pedidosData,
+    setSizeSelectValue,
+    sizeSelectValue,
+    complementsSelectValue,
+    setCompelmentsSelectValue,
+    fruitsSelectValue,
+    setFruitsSelectValue,
+    setDataSelectInfo,
+    setValueSelectInfo,
+  } = useDataContext();
 
   //Sempre que se altera alguma caixa de seleção sendo checkbox e radio essa função ocorre
   //Verifica se é checkbox se sim, ela adiciona o novo valor em um array se ele foi selecionado
   //e remove deixando vazio se caso ele existir e foi desselecionado
   //Se for Radio ele apenas adiciona o valor dentro do estado
-  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const { type, value, checked } = event.target;
-    const numericValue = parseFloat(value);
+  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string) {
+    const { type, checked } = event.target;
 
-    if (type === "checkbox") {
-      if (checked) {
-        // Adiciona o novo valor selecionado na categoria correspondente
-        if (activeTab === "fruits") {
-          setFruitsSelected((prevValues) => [
-            ...(prevValues ?? []),
-            numericValue,
-          ]);
-        } else if (activeTab === "complements") {
-          setCompelmentsSelected((prevValues) => [
-            ...(prevValues ?? []),
-            numericValue,
-          ]);
+    // Atualiza o estado específico (valueSelectInfo) baseado no tipo
+    if (type === "radio") {
+      setValueSelectInfo(checked ? [parseFloat(event.target.value)] : []);
+    }
+
+    // Atualiza o estado geral (dataSelectInfo) com base no tipo
+    setDataSelectInfo((prevValues) => {
+      if (type === "checkbox") {
+        if (checked && textInfo) {
+          return [...(prevValues || []), textInfo];
+        } else {
+          return (prevValues || []).filter((item) => item !== textInfo);
         }
       } else {
-        // Remove item do array se for igual ao valor já presente na categoria correspondente
-        if (activeTab === "fruits") {
-          setFruitsSelected((prevValues) =>
-            prevValues ? prevValues.filter((value) => value !== numericValue): []
-          );
-        } else if (activeTab === "complements") {
-          setCompelmentsSelected((prevValues) =>
-            prevValues ? prevValues.filter((value) => value !== numericValue): []
-          );
-        }
+        return checked ? [textInfo] : prevValues || [];
       }
-    } else if (type === "radio") {
-      setSizeSelect(numericValue);
-    }
+    });
   }
 
   //UseEffect para realizar a soma dos valores sempre que os valores mudarem
-  useEffect(() => {
-    function sumValues() {
-      // Soma dos valores de frutas
-      const valueFruits = fruitsSelected ? fruitsSelected.reduce((acc, val) => acc + val, 0): 0;
-      // Soma dos valores de complementos
-      const valueComplements = complementsSelected ? complementsSelected.reduce((acc, val) => acc + val, 0): 0;
-      // Soma dos valores de tamanho
-      const valueSize = sizeSelect || 0;
-      // Calcula o valor total
-      const valueTotal = valueFruits + valueComplements + valueSize;
-      // Define o valor total no estado
-      setTotalValue(valueTotal);
-    }
-    sumValues();
-  }, [sizeSelect, totalValue, complementsSelected, fruitsSelected]);
-
+  // useEffect(() => {
+  //   function sumValues() {
+  //     // Soma dos valores de frutas
+  //     const valueFruits = fruitsSelectValue
+  //       ? fruitsSelectValue.reduce((acc, val) => acc + val, 0)
+  //       : 0;
+  //     // Soma dos valores de complementos
+  //     const valueComplements = complementsSelectValue
+  //       ? complementsSelectValue.reduce((acc, val) => acc + val, 0)
+  //       : 0;
+  //     // Soma dos valores de tamanho
+  //     const valueSize = sizeSelectValue || 0;
+  //     // Calcula o valor total
+  //     const valueTotal = valueFruits + valueComplements + sizeSelectValue;
+  //     // Define o valor total no estado
+  //     setTotalValue(valueTotal);
+  //   }
+  //   sumValues();
+  // }, [totalValue, complementsSelectValue, fruitsSelectValue, sizeSelectValue]);
 
   //Lógica para navegação por Tabs
   const tabs = ["sizes", "fruits", "complements", "checkout"];
   function nextTab() {
     //Verifica se foram definidos os valores na tab.
-    const isValidTab = (value: number[] | number | undefined) => value !== undefined;
+    const isValidTab = (value: number[] | number | undefined) =>
+      value !== undefined;
     //Define o valor atual do index dentro de activeTab
     //Lógica de próxima tab adicionado ao próximo item na lista.
     //seta o próximo valor como nextIndex.
@@ -83,22 +80,22 @@ export function CardOrder() {
     const nextTab = tabs[nextIndex];
 
     //Switch opções para tab que quando é chamado verifica se a lógica permite que a próxima tab seja chamada.
-    switch (activeTab) {
-      case "sizes":
-        checkAndSetNextTab(sizeSelect, nextTab);
-        break;
-      case "fruits":
-        checkAndSetNextTab(fruitsSelected, nextTab);
-        break;
-      case "complements":
-        checkAndSetNextTab(complementsSelected, nextTab);
-        break;
-      case "checkout":
-        checkAndSetNextTab(totalValue, nextTab);
-        break;
-      default:
-        console.log("Tab inválida");
-    }
+    // switch (activeTab) {
+    //   case "sizes":
+    //     checkAndSetNextTab(sizeSelectValue, nextTab);
+    //     break;
+    //   case "fruits":
+    //     checkAndSetNextTab(fruitsSelectValue, nextTab);
+    //     break;
+    //   case "complements":
+    //     checkAndSetNextTab(complementsSelectValue, nextTab);
+    //     break;
+    //   case "checkout":
+    //     checkAndSetNextTab(totalValue, nextTab);
+    //     break;
+    //   default:
+    //     console.log("Tab inválida");
+    // }
 
     //Verifica e seta nova tab verificando se isValidTab existe e é true permitindo a set da próxima tab
     function checkAndSetNextTab(
@@ -165,7 +162,7 @@ export function CardOrder() {
                             name="size"
                             id={size}
                             value={pedidosData.sizes.prices[index]}
-                            onChange={(event) => handleValuesInput(event)}
+                            onChange={(event) => handleValuesInput(event, size)}
                           />
                         </span>
                       </label>
@@ -193,7 +190,9 @@ export function CardOrder() {
                             name={`fruit_${index}`}
                             id={fruit}
                             value={pedidosData.fruits.prices[index]}
-                            onChange={(event) => handleValuesInput(event)}
+                            onChange={(event) =>
+                              handleValuesInput(event, fruit)
+                            }
                           />
                         </span>
                       </label>
@@ -222,7 +221,9 @@ export function CardOrder() {
                               name={`complement_${index}`}
                               id={complement}
                               value={pedidosData.complements.prices[index]}
-                              onChange={(event) => handleValuesInput(event)}
+                              onChange={(event) =>
+                                handleValuesInput(event, complement)
+                              }
                             />
                           </span>
                         </label>
@@ -239,7 +240,7 @@ export function CardOrder() {
             </select>
             <button onClick={nextTab}>
               Avança
-              {totalValue ? <p>R${totalValue}</p> : <p>R${sizeSelect}</p>}
+              {totalValue ? <p>R${totalValue}</p> : <p>R${sizeSelectValue}</p>}
             </button>
           </div>
         </div>
