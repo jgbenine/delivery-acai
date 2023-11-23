@@ -77,7 +77,7 @@ export function CardOrder() {
         checkAndSetNextTab(valueSelectInfo[1], nextTab);
         break;
       case "complements":
-        checkAndSetNextTab(valueSelectInfo[2], nextTab);
+        checkAndSetNextTab(valueSelectInfo[1], nextTab);
         break;
       case "checkout":
         checkAndSetNextTab(totalValue, nextTab);
@@ -210,7 +210,7 @@ export function CardOrder() {
                     <div className={styles.selectionsIntro}>
                       <span>
                         <h4>Escolha os complementos</h4>
-                        <p>Escolha pelo menos 1 opção.</p>
+                        <p>Escolha até 3 opções.</p>
                       </span>
                       <p>3/3</p>
                     </div>
