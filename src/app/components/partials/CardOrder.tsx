@@ -3,15 +3,17 @@ import { useState, useEffect } from "react";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
 import { useDataContext } from "@/app/data/hooks/useContext";
+import {Checkout} from './Checkout'
 
 export function CardOrder() {
-  const [totalValue, setTotalValue] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<string>("sizes");
   const {
     pedidosData,
     setDataSelectInfo,
     setValueSelectInfo,
     valueSelectInfo,
+    totalValue,
+    setTotalValue
   } = useDataContext();
 
   function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string){
@@ -44,16 +46,6 @@ export function CardOrder() {
       }
     });
   }
-
-  //UseEffect para realizar a soma dos valores sempre que os valores mudarem
-  useEffect(() => {
-    function sumValues() {
-      // Soma dos valores
-      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0 );
-      setTotalValue(sumValuesInfo);
-    }
-    sumValues();
-  }, [totalValue, valueSelectInfo]);
 
   //Lógica para navegação por Tabs
   const tabs = ["sizes", "fruits", "complements", "checkout"];
@@ -233,46 +225,7 @@ export function CardOrder() {
           </div>
         </div>
       ) : (
-        <article className={styles.checkout}>
-          <div className={styles.introCheckout}>
-            <div className={styles.gridCheckout}>
-              <Image
-                src="/assets/produto.png"
-                width={80}
-                height={80}
-                alt="Produto"
-              />
-              <div>
-                <ul>
-                  <li>
-                    <p>1 Item</p>
-                  </li>
-                  <h4>Açai Natural</h4>
-                  <li>
-                    <p>Médio</p>
-                  </li>
-                  <li>
-                    <p>Morango</p>
-                  </li>
-                  <li>
-                    <p>Garona, Paçoca</p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <p>#4184548</p>
-          </div>
-          <div className={styles.checkoutDelivery}>
-            <span>
-              <p>previsão de entrega</p>
-              <h4>15:55 - 16:10</h4>
-            </span>
-            <span>
-              <p>valor total</p>
-              <h4>R${totalValue}</h4>
-            </span>
-          </div>
-        </article>
+        <Checkout />
       )}
     </div>
   );

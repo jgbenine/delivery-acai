@@ -30,31 +30,21 @@ interface DataApi {
 interface DataContextProps {
   children: ReactNode;
   pedidosData?: DataApi | null;
-  setSizeSelectValue: Dispatch<SetStateAction<number>>;
-  setCompelmentsSelectValue: Dispatch<SetStateAction<number[]>>;
-  setFruitsSelectValue: Dispatch<SetStateAction<number[]>>;
-
   setValueSelectInfo: Dispatch<SetStateAction<number[]>>;
   setDataSelectInfo: Dispatch<SetStateAction<string[]>>;
-
-  sizeSelectValue: number;
-  complementsSelectValue: number[];
-  fruitsSelectValue: number[];
+  setTotalValue: Dispatch<SetStateAction<number>>;
+  totalValue: number;
   dataSelectInfo: string[];
   valueSelectInfo: number[];
-
 }
 
 export const DataContext = createContext<DataContextProps | null>(null);
 
 export function Context({ children }: DataContextProps) {
   const [pedidosData, setPedidosData] = useState<DataApi | null>(null);
-  const [sizeSelectValue, setSizeSelectValue] = useState<number>(0);
-  const [complementsSelectValue, setCompelmentsSelectValue] = useState<number[]>([]);
-  const [fruitsSelectValue, setFruitsSelectValue] = useState<number[]>([]);
-  
-  const [dataSelectInfo, setDataSelectInfo] = useState<string[]>([])
+  const [dataSelectInfo, setDataSelectInfo] = useState<string[]>([]);
   const [valueSelectInfo, setValueSelectInfo] = useState<number[]>([]);
+  const [totalValue, setTotalValue] = useState<number>(0);
 
   useEffect(() => {
     async function fetchPedidos() {
@@ -70,10 +60,21 @@ export function Context({ children }: DataContextProps) {
     fetchPedidos();
   }, []);
 
+  //UseEffect para realizar a soma dos valores sempre que os valores mudarem
+  useEffect(() => {
+    function sumValues() {
+      // Soma dos valores
+      const sumValuesInfo = valueSelectInfo.reduce(
+        (acc, currentValue) => acc + currentValue,
+        0
+      );
+      setTotalValue(sumValuesInfo);
+    }
+    sumValues();
+  }, [totalValue, valueSelectInfo, setTotalValue]);
+
   useEffect(() => {
     console.log("selected value", valueSelectInfo);
-    // console.log("selected comple value", complementsSelectValue);
-    // console.log("selected fruits value", fruitsSelectValue);
     console.log("DATA:", dataSelectInfo);
   }, [valueSelectInfo, dataSelectInfo]);
 
@@ -82,16 +83,12 @@ export function Context({ children }: DataContextProps) {
       value={{
         pedidosData,
         children,
-        setSizeSelectValue,
-        sizeSelectValue,
-        setCompelmentsSelectValue,
-        complementsSelectValue,
-        setFruitsSelectValue,
-        fruitsSelectValue,
         setDataSelectInfo,
         dataSelectInfo,
         setValueSelectInfo,
-        valueSelectInfo
+        valueSelectInfo,
+        totalValue,
+        setTotalValue,
       }}
     >
       {children}
