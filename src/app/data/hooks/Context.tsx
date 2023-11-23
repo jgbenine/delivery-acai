@@ -36,6 +36,8 @@ interface DataContextProps {
   totalValue: number;
   dataSelectInfo: string[];
   valueSelectInfo: number[];
+  setQuantityValue: Dispatch<SetStateAction<number>>;
+  quantityValue: number;
 }
 
 export const DataContext = createContext<DataContextProps | null>(null);
@@ -45,6 +47,7 @@ export function Context({ children }: DataContextProps) {
   const [dataSelectInfo, setDataSelectInfo] = useState<string[]>([]);
   const [valueSelectInfo, setValueSelectInfo] = useState<number[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
+  const [quantityValue, setQuantityValue] = useState<number>(1);
 
   useEffect(() => {
     async function fetchPedidos() {
@@ -64,14 +67,12 @@ export function Context({ children }: DataContextProps) {
   useEffect(() => {
     function sumValues() {
       // Soma dos valores
-      const sumValuesInfo = valueSelectInfo.reduce(
-        (acc, currentValue) => acc + currentValue,
-        0
-      );
-      setTotalValue(sumValuesInfo);
+      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
+      const totalValueInfo = sumValuesInfo * quantityValue;
+      setTotalValue(totalValueInfo);
     }
     sumValues();
-  }, [totalValue, valueSelectInfo, setTotalValue]);
+  }, [totalValue, valueSelectInfo, setTotalValue, quantityValue]);
 
   useEffect(() => {
     console.log("selected value", valueSelectInfo);
@@ -89,6 +90,7 @@ export function Context({ children }: DataContextProps) {
         valueSelectInfo,
         totalValue,
         setTotalValue,
+        setQuantityValue,quantityValue
       }}
     >
       {children}

@@ -97,7 +97,7 @@
   justify-content: flex-end;
 }
 
-.actions button {
+.btnNext{
   width: 100%;
   max-width: 266px;
   display: flex;
@@ -116,8 +116,28 @@
   cursor: pointer;
 }
 
-.actions select {
-  width: 60px;
+
+.quantityControl{
+  display: flex;
   border-radius: 5px;
-  cursor: pointer;
+  border: 1px solid var(--grayDefault);
+  height: 40px;
+  font-size: 0.9rem;
+}
+
+.quantityControl input{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  max-width: 30px;
+  border: transparent;
+  font-size: 0.9rem;
+}
+
+.quantityControl button{
+  width: 20px;
+  background: transparent;
+  border: transparent;
 }

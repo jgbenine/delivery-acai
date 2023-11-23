@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useDataContext } from "@/app/data/hooks/useContext";
+import { Checkout } from "./Checkout";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
-import { useDataContext } from "@/app/data/hooks/useContext";
-import {Checkout} from './Checkout'
 
 export function CardOrder() {
   const [activeTab, setActiveTab] = useState<string>("sizes");
@@ -13,17 +13,23 @@ export function CardOrder() {
     setValueSelectInfo,
     valueSelectInfo,
     totalValue,
-    setTotalValue
+    quantityValue,
+    setQuantityValue,
   } = useDataContext();
 
-  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string){
+  function handleValuesInput(
+    event: React.ChangeEvent<HTMLInputElement>,
+    textInfo: string
+  ) {
     const { type, checked, value } = event.target;
     const numericValue = parseFloat(value);
 
     setValueSelectInfo((prevValues) => {
       if (type === "checkbox") {
         // Adiciona ou remove valores numéricos mantendo os existentes
-        return checked ? [...(prevValues || []), numericValue]: (prevValues || []).filter((item) => item !== numericValue);
+        return checked
+          ? [...(prevValues || []), numericValue]
+          : (prevValues || []).filter((item) => item !== numericValue);
       } else if (type === "radio" && checked) {
         // Para input radio, mantém apenas o valor atualmente selecionado
         return [numericValue];
@@ -36,7 +42,9 @@ export function CardOrder() {
     setDataSelectInfo((prevInfo) => {
       if (type === "checkbox") {
         if (checked && textInfo) {
-          return checked ? [...(prevInfo || []), textInfo] : (prevInfo || []).filter((item) => item !== textInfo);
+          return checked
+            ? [...(prevInfo || []), textInfo]
+            : (prevInfo || []).filter((item) => item !== textInfo);
         } else {
           return (prevInfo || []).filter((item) => item !== textInfo);
         }
@@ -49,6 +57,7 @@ export function CardOrder() {
 
   //Lógica para navegação por Tabs
   const tabs = ["sizes", "fruits", "complements", "checkout"];
+
   function nextTab() {
     //Verifica se foram definidos os valores na tab.
     const isValidTab = (value: number[] | number | undefined) =>
@@ -89,6 +98,14 @@ export function CardOrder() {
       }
     }
   }
+
+  function decreaseQuantity(){
+    setQuantityValue(Math.max(1, quantityValue - 1));
+  };
+
+  function increaseQuantity(){
+    setQuantityValue(quantityValue + 1);
+  };
 
   return (
     <div className={styles.card}>
@@ -215,11 +232,20 @@ export function CardOrder() {
             </article>
           </div>
           <div className={styles.actions}>
-            <select name="" id="">
-              <option value="1">1</option>
-            </select>
-            <button onClick={nextTab}>
-              Avança
+            <div className={styles.quantityControl}>
+              <button onClick={decreaseQuantity}>-</button>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="1"
+                value={quantityValue}
+                onChange={(e) => setQuantityValue(parseInt(e.target.value, 10) || 1)}
+              />
+              <button onClick={increaseQuantity}>+</button>
+            </div>
+            <button onClick={nextTab} className={styles.btnNext}>
+              Avançar
               {totalValue ? <p>R${totalValue}</p> : <p>R$0</p>}
             </button>
           </div>
