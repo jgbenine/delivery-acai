@@ -1,9 +1,9 @@
 import Image from "next/image";
 import styles from "../../styles/checkout.module.css";
-import { useDataContext } from "@/app/data/hooks/useContext";
+import useDataContext from '../../data/hooks/UseContextData'
 
 export function Checkout() {
-  const { totalValue, dataSelectInfo } = useDataContext();
+  const { totalValue, dataSelectInfo, quantityValue } = useDataContext();
 
   return (
     <article className={styles.checkout}>
@@ -16,7 +16,7 @@ export function Checkout() {
             alt="Produto"
           />
           <div>
-            <p>1 Item</p>
+            <p>{quantityValue > 1 ? `${quantityValue} items` : `${quantityValue} item`}</p>
             <h4>Açai Natural</h4>
             <ul>
               {dataSelectInfo.map((item, index) => (

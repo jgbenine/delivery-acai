@@ -1,58 +1,46 @@
 "use client";
 import { useState } from "react";
-import { useDataContext } from "@/app/data/hooks/useContext";
+import useDataContext from "../../data/hooks/UseContextData";
 import { Checkout } from "./Checkout";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
 
 export function CardOrder() {
   const [activeTab, setActiveTab] = useState<string>("sizes");
+
   const {
-    pedidosData,
-    setDataSelectInfo,
-    setValueSelectInfo,
     valueSelectInfo,
-    totalValue,
     quantityValue,
+    setTotalValue,
+    setDataSelectInfo,
+    totalValue,
     setQuantityValue,
+    pedidosData,
+    setValueSelectInfo,
+    dataSelectInfo
   } = useDataContext();
 
-  function handleValuesInput(
-    event: React.ChangeEvent<HTMLInputElement>,
-    textInfo: string
-  ) {
+  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string) {
     const { type, checked, value } = event.target;
     const numericValue = parseFloat(value);
 
-    setValueSelectInfo((prevValues) => {
-      if (type === "checkbox") {
-        // Adiciona ou remove valores numéricos mantendo os existentes
-        return checked
-          ? [...(prevValues || []), numericValue]
-          : (prevValues || []).filter((item) => item !== numericValue);
-      } else if (type === "radio" && checked) {
-        // Para input radio, mantém apenas o valor atualmente selecionado
-        return [numericValue];
+    // Verifica se é um radio ou checkbox
+    if (type === 'radio') {
+      // Se for radio, substitui o valor no array
+      setValueSelectInfo([numericValue]);
+      setDataSelectInfo([textInfo]);
+    } else if (type === 'checkbox') {
+      // Se for checkbox, verifica se está marcado ou desmarcado
+      if (checked) {
+        // Adiciona valor ao array se estiver marcado
+        setValueSelectInfo([...valueSelectInfo, numericValue]);
+        setDataSelectInfo([...dataSelectInfo, textInfo]);
       } else {
-        return prevValues || [];
+        // Remove valor do array se estiver desmarcado
+        setValueSelectInfo(valueSelectInfo.filter(val => val !== numericValue));
+        setDataSelectInfo(dataSelectInfo.filter(data => data !== textInfo));
       }
-    });
-
-    // Atualiza o estado geral (dataSelectInfo) com base no tipo
-    setDataSelectInfo((prevInfo) => {
-      if (type === "checkbox") {
-        if (checked && textInfo) {
-          return checked
-            ? [...(prevInfo || []), textInfo]
-            : (prevInfo || []).filter((item) => item !== textInfo);
-        } else {
-          return (prevInfo || []).filter((item) => item !== textInfo);
-        }
-      } else {
-        // Para radio buttons, adiciona ou remove o texto correspondente
-        return checked ? [textInfo] : prevInfo || [];
-      }
-    });
+    }
   }
 
   //Lógica para navegação por Tabs

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
-import { Context } from "./data/hooks/Context";
+import { DataContextProvider } from './data/hooks/Context';
 import "./globals.css";
 
 const ubuntu = Ubuntu({
@@ -19,10 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Context>
+    <DataContextProvider>
       <html lang="en">
         <body className={ubuntu.className}>{children}</body>
       </html>
-    </Context>
+    </DataContextProvider>
   );
 }
