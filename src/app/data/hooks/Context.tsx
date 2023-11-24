@@ -1,12 +1,5 @@
-"use client";
-import {
-  ReactNode,
-  useEffect,
-  useState,
-  createContext,
-  Dispatch,
-  SetStateAction,
-} from "react";
+'use client'
+import React, { createContext, ReactNode, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { fetch } from "../api/axios";
 import { DataApiSchema } from "../api/schema";
 
@@ -27,24 +20,27 @@ interface DataApi {
   id: string;
 }
 
-interface DataContextProps {
-  children: ReactNode;
-  pedidosData?: DataApi | null;
+export interface DataProps {
   setValueSelectInfo: Dispatch<SetStateAction<number[]>>;
-  setDataSelectInfo: Dispatch<SetStateAction<string[]>>;
+  setDataSelectInfo: Dispatch<SetStateAction<(string | number)[]>>;
   setTotalValue: Dispatch<SetStateAction<number>>;
   totalValue: number;
-  dataSelectInfo: string[];
+  dataSelectInfo: (string | number)[];
   valueSelectInfo: number[];
   setQuantityValue: Dispatch<SetStateAction<number>>;
   quantityValue: number;
+  pedidosData: DataApi | null;
 }
 
-export const DataContext = createContext<DataContextProps | null>(null);
+export interface ContextProps {
+  children: ReactNode;
+}
 
-export function Context({ children }: DataContextProps) {
+export const DataContext = createContext<DataProps | undefined>(undefined);
+
+export function DataContextProvider({ children }: ContextProps) {
   const [pedidosData, setPedidosData] = useState<DataApi | null>(null);
-  const [dataSelectInfo, setDataSelectInfo] = useState<string[]>([]);
+  const [dataSelectInfo, setDataSelectInfo] = useState<(string | number)[]>([]);
   const [valueSelectInfo, setValueSelectInfo] = useState<number[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
   const [quantityValue, setQuantityValue] = useState<number>(1);
@@ -63,7 +59,6 @@ export function Context({ children }: DataContextProps) {
     fetchPedidos();
   }, []);
 
-  //UseEffect para realizar a soma dos valores sempre que os valores mudarem
   useEffect(() => {
     function sumValues() {
       const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
@@ -71,22 +66,28 @@ export function Context({ children }: DataContextProps) {
       setTotalValue(totalValueInfo);
     }
     sumValues();
-  }, [totalValue, valueSelectInfo, setTotalValue, quantityValue]);
+  }, [valueSelectInfo, quantityValue]);
 
+  const contextValue: DataProps = {
+    setValueSelectInfo,
+    setDataSelectInfo,
+    setTotalValue,
+    totalValue,
+    dataSelectInfo,
+    valueSelectInfo,
+    setQuantityValue,
+    quantityValue,
+    pedidosData
+  };
+
+  useEffect(()=>{
+    console.log('data info', dataSelectInfo)
+    console.log('value', valueSelectInfo)
+  },[dataSelectInfo, valueSelectInfo])
+
+  
   return (
-    <DataContext.Provider
-      value={{
-        pedidosData,
-        children,
-        setDataSelectInfo,
-        dataSelectInfo,
-        setValueSelectInfo,
-        valueSelectInfo,
-        totalValue,
-        setTotalValue,
-        setQuantityValue,quantityValue
-      }}
-    >
+    <DataContext.Provider value={contextValue}>
       {children}
     </DataContext.Provider>
   );
