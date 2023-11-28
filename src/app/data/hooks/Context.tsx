@@ -30,6 +30,8 @@ export interface DataProps {
   setQuantityValue: Dispatch<SetStateAction<number>>;
   quantityValue: number;
   pedidosData: DataApi | null;
+  activeTab: string;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 export interface ContextProps {
@@ -44,6 +46,7 @@ export function DataContextProvider({ children }: ContextProps) {
   const [valueSelectInfo, setValueSelectInfo] = useState<number[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
   const [quantityValue, setQuantityValue] = useState<number>(1);
+  const [activeTab, setActiveTab] = useState<string>("sizes");
 
   useEffect(() => {
     async function fetchPedidos() {
@@ -77,7 +80,9 @@ export function DataContextProvider({ children }: ContextProps) {
     valueSelectInfo,
     setQuantityValue,
     quantityValue,
-    pedidosData
+    pedidosData,
+    activeTab,
+    setActiveTab,
   };
 
   useEffect(()=>{

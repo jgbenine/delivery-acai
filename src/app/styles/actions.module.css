@@ -1,0 +1,57 @@
+.actions {
+  width: 100%;
+  padding: 20px 0px 25px 0px;
+  display: flex;
+  gap: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.btnNext {
+  width: 100%;
+  max-width: 266px;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  background: #791d8f;
+  align-items: center;
+  color: white;
+  padding: 0px 10px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: unset;
+  border: unset;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quantityControl {
+  display: flex;
+  border-radius: 5px;
+  border: 1px solid var(--grayDefault);
+  height: 40px;
+  font-size: 0.9rem;
+}
+
+.quantityControl input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  max-width: 30px;
+  border: transparent;
+  font-size: 0.9rem;
+}
+
+.quantityControl button {
+  width: 20px;
+  background: transparent;
+  border: transparent;
+}
+
+@media (min-width: 420px) {
+  .actions {
+    justify-content: flex-end;
+  }
+}
