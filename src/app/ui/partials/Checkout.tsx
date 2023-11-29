@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "../../styles/checkout.module.css";
+import styles from "../styles/checkout.module.css";
 import useDataContext from '../../data/hooks/UseContextData'
 
 export function Checkout() {

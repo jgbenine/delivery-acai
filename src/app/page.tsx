@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
-import { Header } from "./components/partials/Header";
-import { CardOrder } from "./components/partials/CardOrder";
+import { Header } from "./ui/partials/Header";
+import { CardOrder } from "./ui/partials/CardOrder";
 
 export default function Home() {
   return (

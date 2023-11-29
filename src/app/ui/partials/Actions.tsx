@@ -1,5 +1,5 @@
 import useDataContext from "../../data/hooks/UseContextData";
-import styles from '../../styles/actions.module.css';
+import styles from '../styles/actions.module.css';
 
 function Actions() {
   const {quantityValue, setQuantityValue, totalValue, valueSelectInfo, activeTab, setActiveTab } = useDataContext()

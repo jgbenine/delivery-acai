@@ -1,9 +1,9 @@
 "use client";
 import { Checkout } from "./Checkout";
-import { Radio } from "../Radio";
-import { Checkbox } from "../Checkbox";
-import { IntroSelectProdutc } from "../IntroSelectProdutc";
-import styles from "../../styles/cardOrder.module.css";
+import { Radio } from "../components/Radio";
+import { Checkbox } from "../components/Checkbox";
+import { IntroSelectProdutc } from "../components/IntroSelectProdutc";
+import styles from "../styles/cardOrder.module.css";
 import Image from "next/image";
 import Actions from "./Actions";
 import useDataContext from "../../data/hooks/UseContextData";
