@@ -1,0 +1,23 @@
+.intro {
+  padding: 24px 0px 10px 0px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--grayDefault);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.intro h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.intro p {
+  font-size: 0.8rem;
+  padding-top: 5px;
+}
+
+.selectionsForm {
+  display: flex;
+  flex-direction: column;
+}
