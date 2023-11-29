@@ -9,8 +9,8 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Delivery",
-  description: "Delivery project",
+  title: "Delivery Açaí | Faça seu pedido",
+  description: "Delivery Açaí | Faça seu pedido",
 };
 
 export default function RootLayout({

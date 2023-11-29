@@ -7,6 +7,7 @@
   padding: 15px 15px 0px 15px;
   border-radius: 3px;
   margin-top: 35px;
+  box-shadow: 5px 6px 5px 0px rgba(0,0,0,0.2);
 }
 
 .container {
@@ -17,7 +18,7 @@
 .content{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 }
 
 .introView{
@@ -34,6 +35,7 @@
   height: 250px;
   width: 100%;
   margin: 0 auto;
+  box-shadow: -3px -4px 5px 0px rgba(0,0,0,0.1);
 }
 
 
@@ -41,7 +43,7 @@
   display: flex;
   align-items: center;
   font-size: 0.9rem;
-  padding: 24px 0px;
+  padding: 10px 0px 24px 0px;
 }
 
 .avaliationInfo {
@@ -72,26 +74,11 @@
   color: var(--grayDefault);
 }
 
-.selectionsIntro {
-  padding: 24px 0px;
-  display: flex;
-  justify-content: space-between;
-  color: var(--grayDefault);
-}
-
-.selectionsIntro h4 {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.selectionsIntro p {
-  font-size: 0.8rem;
-}
-
 .selectionsForm {
   display: flex;
   flex-direction: column;
-}
+} 
+
 .selectionsForm label {
   display: flex;
   justify-content: space-between;
@@ -105,7 +92,6 @@
   display: flex;
   gap: 10px;
 }
-
 
 @media(min-width:420px){
  .wrapperImg img{

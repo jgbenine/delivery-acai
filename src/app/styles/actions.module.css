@@ -1,9 +1,8 @@
 .actions {
   width: 100%;
-  padding: 20px 0px 25px 0px;
+  padding: 0px 0px 15px 0px;
   display: flex;
   gap: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .btnNext {
@@ -12,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   height: 40px;
-  background: #791d8f;
+  background: var(--purpleAcai);
   align-items: center;
   color: white;
   padding: 0px 10px;

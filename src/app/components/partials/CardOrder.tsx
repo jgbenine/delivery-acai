@@ -1,31 +1,36 @@
 "use client";
-import useDataContext from "../../data/hooks/UseContextData";
 import { Checkout } from "./Checkout";
+import { Radio } from "../Radio";
+import { Checkbox } from "../Checkbox";
+import { IntroSelectProdutc } from "../IntroSelectProdutc";
 import styles from "../../styles/cardOrder.module.css";
 import Image from "next/image";
 import Actions from "./Actions";
+import useDataContext from "../../data/hooks/UseContextData";
 
 export function CardOrder() {
-
   const {
     valueSelectInfo,
     activeTab,
     setDataSelectInfo,
     pedidosData,
     setValueSelectInfo,
-    dataSelectInfo
+    dataSelectInfo,
   } = useDataContext();
 
-  function handleValuesInput(event: React.ChangeEvent<HTMLInputElement>, textInfo: string) {
+  function handleValuesInput(
+    event: React.ChangeEvent<HTMLInputElement>,
+    textInfo: string
+  ) {
     const { type, checked, value } = event.target;
     const numericValue = parseFloat(value);
 
     // Verifica se é um radio ou checkbox
-    if (type === 'radio') {
+    if (type === "radio") {
       // Se for radio, substitui o valor no array
       setValueSelectInfo([numericValue]);
       setDataSelectInfo([textInfo]);
-    } else if (type === 'checkbox') {
+    } else if (type === "checkbox") {
       // Se for checkbox, verifica se está marcado ou desmarcado
       if (checked) {
         // Adiciona valor ao array se estiver marcado
@@ -33,8 +38,10 @@ export function CardOrder() {
         setDataSelectInfo([...dataSelectInfo, textInfo]);
       } else {
         // Remove valor do array se estiver desmarcado
-        setValueSelectInfo(valueSelectInfo.filter(val => val !== numericValue));
-        setDataSelectInfo(dataSelectInfo.filter(data => data !== textInfo));
+        setValueSelectInfo(
+          valueSelectInfo.filter((val) => val !== numericValue)
+        );
+        setDataSelectInfo(dataSelectInfo.filter((data) => data !== textInfo));
       }
     }
   }
@@ -78,91 +85,75 @@ export function CardOrder() {
                 </p>
                 {pedidosData?.sizes && activeTab === "sizes" ? (
                   <>
-                    <div className={styles.selectionsIntro}>
-                      <span>
-                        <h4>Escolha o tamanho</h4>
-                        <p>Escolha pelo menos 1 opção.</p>
-                      </span>
-                      <p>1/3</p>
-                    </div>
+                    <IntroSelectProdutc
+                      labelText="Selecione o tamanho"
+                      descriptionOption="Escolha pelo menos um tamanho."
+                      stepOption="1/3"
+                    />
                     <form className={styles.selectionsForm}>
                       {pedidosData.sizes.options.map((size, index) => (
-                        <label key={index} htmlFor={size}>
-                          <p>{size}</p>
-                          <span>
-                            R${pedidosData.sizes.prices[index]}
-                            <input
-                              type="radio"
-                              name="size"
-                              id={size}
-                              value={pedidosData.sizes.prices[index]}
-                              onChange={(event) =>
-                                handleValuesInput(event, size)
-                              }
-                            />
-                          </span>
-                        </label>
+                        <Radio
+                          key={index}
+                          index={index}
+                          htmlFor={size}
+                          contentText={size}
+                          price={pedidosData.sizes.prices[index]}
+                          name="size"
+                          idValue={size}
+                          value={pedidosData.sizes.prices[index]}
+                          onChange={(event) => handleValuesInput(event, size)}
+                        />
                       ))}
                     </form>
                   </>
                 ) : null}
                 {pedidosData?.fruits && activeTab === "fruits" ? (
                   <>
-                    <div className={styles.selectionsIntro}>
-                      <span>
-                        <h4>Escolha as frutas</h4>
-                        <p>Escolha pelo menos 1 opção.</p>
-                      </span>
-                      <p>2/3</p>
-                    </div>
+                    <IntroSelectProdutc
+                      labelText="Escolha suas frutas"
+                      descriptionOption="Selecione até três opções."
+                      stepOption="2/3"
+                    />
                     <form className={styles.selectionsForm}>
                       {pedidosData.fruits.options.map((fruit, index) => (
-                        <label key={index} htmlFor={fruit}>
-                          <p>{fruit}</p>
-                          <span>
-                            +R${pedidosData.fruits.prices[index]}
-                            <input
-                              type="checkbox"
-                              name={`fruit_${index}`}
-                              id={fruit}
-                              value={pedidosData.fruits.prices[index]}
-                              onChange={(event) =>
-                                handleValuesInput(event, fruit)
-                              }
-                            />
-                          </span>
-                        </label>
+                        <Checkbox
+                          key={index}
+                          index={index}
+                          htmlFor={fruit}
+                          contentText={fruit}
+                          price={pedidosData.fruits.prices[index]}
+                          name={`fruit_${index}`}
+                          idValue={fruit}
+                          value={pedidosData.fruits.prices[index]}
+                          onChange={(event) => handleValuesInput(event, fruit)}
+                        />
                       ))}
                     </form>
                   </>
                 ) : null}
                 {pedidosData?.complements && activeTab === "complements" ? (
                   <>
-                    <div className={styles.selectionsIntro}>
-                      <span>
-                        <h4>Escolha os complementos</h4>
-                        <p>Escolha até 3 opções.</p>
-                      </span>
-                      <p>3/3</p>
-                    </div>
+                     <IntroSelectProdutc
+                      labelText="Escolha os complementos."
+                      descriptionOption="Escolha até três opções."
+                      stepOption="3/3"
+                    />
                     <form className={styles.selectionsForm}>
                       {pedidosData.complements.options.map(
                         (complement, index) => (
-                          <label key={index} htmlFor={complement}>
-                            <p>{complement}</p>
-                            <span>
-                              +R${pedidosData.complements.prices[index]}
-                              <input
-                                type="checkbox"
-                                name={`complement_${index}`}
-                                id={complement}
-                                value={pedidosData.complements.prices[index]}
-                                onChange={(event) =>
-                                  handleValuesInput(event, complement)
-                                }
-                              />
-                            </span>
-                          </label>
+                          <Checkbox
+                            key={index}
+                            index={index}
+                            htmlFor={complement}
+                            contentText={complement}
+                            price={pedidosData.complements.prices[index]}
+                            name={`complement_${index}`}
+                            idValue={complement}
+                            value={pedidosData.complements.prices[index]}
+                            onChange={(event) =>
+                              handleValuesInput(event, complement)
+                            }
+                          />
                         )
                       )}
                     </form>
