@@ -1,6 +1,8 @@
-import React from "react";
+import { ReactNode } from "react";
+import '../styles/checkout.module.css'
 
-interface CheckboxProps{
+
+interface CheckboxProps {
   index: number;
   htmlFor: string;
   contentText: string;
@@ -8,13 +10,16 @@ interface CheckboxProps{
   name: string;
   value: number;
   idValue: string;
+  icon: ReactNode;
   onChange: (event: React.ChangeEvent<HTMLInputElement>, value: number) => void;
 }
 
 export function Checkbox(props: CheckboxProps) {
   return (
     <label key={props.index} htmlFor={props.htmlFor}>
-      <p>{props.contentText}</p>
+      <span className="wrapper-intro">
+        {props.icon}
+        {props.contentText}</span>
       <span>
         +R${props.price}
         <input

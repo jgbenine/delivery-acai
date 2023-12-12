@@ -3,6 +3,7 @@ import { Checkout } from "./Checkout";
 import { Radio } from "../components/Radio";
 import { Checkbox } from "../components/Checkbox";
 import { IntroSelectProdutc } from "../components/IntroSelectProdutc";
+import { Banana, Candy } from 'lucide-react'
 import styles from "../styles/cardOrder.module.css";
 import Image from "next/image";
 import Actions from "./Actions";
@@ -125,6 +126,7 @@ export function CardOrder() {
                           name={`fruit_${index}`}
                           idValue={fruit}
                           value={pedidosData.fruits.prices[index]}
+                          icon={<Banana />}
                           onChange={(event) => handleValuesInput(event, fruit)}
                         />
                       ))}
@@ -150,8 +152,9 @@ export function CardOrder() {
                             name={`complement_${index}`}
                             idValue={complement}
                             value={pedidosData.complements.prices[index]}
+                            icon={<Candy />}
                             onChange={(event) =>
-                              handleValuesInput(event, complement)
+                            handleValuesInput(event, complement)
                             }
                           />
                         )

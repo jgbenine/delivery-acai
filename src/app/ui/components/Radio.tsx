@@ -1,6 +1,7 @@
 import React from "react";
+import { CupSoda } from "lucide-react";
 
-interface RadioProps{
+interface RadioProps {
   index: number;
   htmlFor: string;
   contentText: string;
@@ -14,7 +15,10 @@ interface RadioProps{
 export function Radio(props: RadioProps) {
   return (
     <label key={props.index} htmlFor={props.htmlFor}>
-      <p>{props.contentText}</p>
+      <span>
+        <CupSoda />
+        <p>{props.contentText}</p>
+      </span>
       <span>
         R${props.price}
         <input
