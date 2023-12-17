@@ -35,7 +35,7 @@
 .btnPrev {
   border: unset;
   padding: 5px;
-  background: var(--purpleAcai);
+  background: var(--purpleLight);
   border-radius: 5px;
   cursor: pointer;
 }

@@ -3,7 +3,7 @@ import styles from "../styles/checkout.module.css";
 import useDataContext from '../../data/hooks/UseContextData'
 
 export function Checkout() {
-  const { totalValue, dataSelectInfo, quantityValue } = useDataContext();
+  const { totalValue, dataSelectInfo, quantityValue, timeDeliveryValue } = useDataContext();
 
   return (
     <article className={styles.checkout}>
@@ -30,7 +30,7 @@ export function Checkout() {
       <div className={styles.checkoutDelivery}>
         <span>
           <p>previsão de entrega</p>
-          <h4>15:55 - 16:10</h4>
+          <h4>{timeDeliveryValue}</h4>
         </span>
         <span>
           <p>valor total</p>
