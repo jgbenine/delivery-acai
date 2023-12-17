@@ -32,20 +32,30 @@
   cursor: pointer;
 }
 
+.btnNext:hover{
+  transition: all 0.3s ease-in-out;
+  background: var(--purpleMed);
+}
+
 .btnPrev {
   border: unset;
-  padding: 5px;
-  background: var(--purpleLight);
+  padding: 5px 15px;
+  background: transparent;
+  border: 1px solid var(--whiteGray);
   border-radius: 5px;
   cursor: pointer;
+}
+
+.btnPrev:hover{
+  transition: all 0.3s ease-in-out;
+  background: var(--whiteGray);
 }
 
 .quantityControl {
   display: flex;
   border-radius: 5px;
-  border: 1px solid var(--grayDefault);
+  border: 1px solid var(--whiteGray);
   height: 40px;
-  font-size: 0.9rem;
 }
 
 .quantityControl input {
@@ -54,15 +64,25 @@
   justify-content: center;
   height: 100%;
   text-align: center;
-  max-width: 30px;
+  width: 30px;
   border: transparent;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  background: white;
+  color: black;
+  font-weight: 800;
 }
 
 .quantityControl button {
-  width: 20px;
+  width: 40px;
   background: transparent;
   border: transparent;
+  cursor: pointer;
+}
+
+.quantityControl button:hover{
+  transition: all 0.5s ease-in-out;
+  background: var(--whiteGray);
+  color:white;
 }
 
 @media (min-width: 420px) {

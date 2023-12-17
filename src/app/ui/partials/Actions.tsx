@@ -15,13 +15,13 @@ function Actions() {
     dataSelectInfo,
   } = useDataContext();
 
-  //Acrescentar/remover mais de um pedido(item)
+
   function decreaseQuantity() {
     setQuantityValue(Math.max(1, quantityValue - 1));
   }
-
   function increaseQuantity() {
-    setQuantityValue(quantityValue + 1);
+    const maxLimit = 10;
+    setQuantityValue((prevValue) => Math.min(prevValue + 1, maxLimit));
   }
 
   const tabs = ["sizes", "fruits", "complements", "checkout"];
@@ -84,7 +84,7 @@ function Actions() {
     <div className={styles.actions}>
       <span>
         <button className={styles.btnPrev} onClick={previousTab}>
-          <Undo2 color="white" />
+          <Undo2 color="black" />
         </button>
       </span>
       <div className={styles.container}>
@@ -95,6 +95,7 @@ function Actions() {
             id="quantity"
             name="quantity"
             min="1"
+            disabled
             value={quantityValue}
             onChange={(e) =>
               setQuantityValue(parseInt(e.target.value, 10) || 1)
