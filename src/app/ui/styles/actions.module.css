@@ -5,6 +5,14 @@
   gap: 20px;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
 .btnNext {
   width: 100%;
   max-width: 266px;
@@ -20,6 +28,14 @@
   font-weight: bold;
   box-shadow: unset;
   border: unset;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btnPrev {
+  border: unset;
+  padding: 5px;
+  background: var(--purpleLight);
   border-radius: 5px;
   cursor: pointer;
 }
@@ -51,6 +67,11 @@
 
 @media (min-width: 420px) {
   .actions {
+    justify-content: space-between;
+  }
+
+  .container {
+    flex-direction: row;
     justify-content: flex-end;
   }
 }

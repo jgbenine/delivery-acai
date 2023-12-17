@@ -3,6 +3,7 @@ import { Checkout } from "./Checkout";
 import { Radio } from "../components/Radio";
 import { Checkbox } from "../components/Checkbox";
 import { IntroSelectProdutc } from "../components/IntroSelectProdutc";
+import { Banana, Cherry, Grape, IceCream2, Milk, Nut } from "lucide-react";
 import styles from "../styles/cardOrder.module.css";
 import Image from "next/image";
 import Actions from "./Actions";
@@ -17,6 +18,12 @@ export function CardOrder() {
     setValueSelectInfo,
     dataSelectInfo,
   } = useDataContext();
+
+  //Array de icones lucide
+  const iconesFruit = { Banana: <Banana />, Cherry: <Cherry />, Grape: <Grape />};
+  const iconesDoces = { Bean: <Nut />, IceCream2: <IceCream2 />, Milk: <Milk />};
+  const iconesArray = [...Object.values(iconesFruit), ...Object.values(iconesDoces)];
+
 
   function handleValuesInput(
     event: React.ChangeEvent<HTMLInputElement>,
@@ -125,6 +132,7 @@ export function CardOrder() {
                           name={`fruit_${index}`}
                           idValue={fruit}
                           value={pedidosData.fruits.prices[index]}
+                          icon={iconesArray[index]}
                           onChange={(event) => handleValuesInput(event, fruit)}
                         />
                       ))}
@@ -133,7 +141,7 @@ export function CardOrder() {
                 ) : null}
                 {pedidosData?.complements && activeTab === "complements" ? (
                   <>
-                     <IntroSelectProdutc
+                    <IntroSelectProdutc
                       labelText="Escolha os complementos."
                       descriptionOption="Escolha até três opções."
                       stepOption="3/3"
@@ -150,6 +158,7 @@ export function CardOrder() {
                             name={`complement_${index}`}
                             idValue={complement}
                             value={pedidosData.complements.prices[index]}
+                            icon={iconesArray[index + Object.values(iconesFruit).length]}
                             onChange={(event) =>
                               handleValuesInput(event, complement)
                             }

@@ -1,7 +1,16 @@
-'use client'
-import React, { createContext, ReactNode, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
+"use client";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { fetch } from "../api/axios";
 import { DataApiSchema } from "../api/schema";
+import { timeDeliveryFunction } from "../utils/timeDelivery";
 
 interface DataApi {
   sizes: {
@@ -31,6 +40,7 @@ export interface DataProps {
   quantityValue: number;
   pedidosData: DataApi | null;
   activeTab: string;
+  timeDeliveryValue?: string;
   setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
@@ -44,6 +54,7 @@ export function DataContextProvider({ children }: ContextProps) {
   const [pedidosData, setPedidosData] = useState<DataApi | null>(null);
   const [dataSelectInfo, setDataSelectInfo] = useState<(string | number)[]>([]);
   const [valueSelectInfo, setValueSelectInfo] = useState<number[]>([]);
+  const [timeDeliveryValue, setTimeDeliveryValue] = useState<string>('');
   const [totalValue, setTotalValue] = useState<number>(0);
   const [quantityValue, setQuantityValue] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>("sizes");
@@ -53,6 +64,7 @@ export function DataContextProvider({ children }: ContextProps) {
       try {
         const response = await fetch.get("/pedido");
         const data = response.data;
+        console.log(data);
         const validatedDataApi = DataApiSchema.parse(data[0]);
         setPedidosData(validatedDataApi);
       } catch (error) {
@@ -64,11 +76,17 @@ export function DataContextProvider({ children }: ContextProps) {
 
   useEffect(() => {
     function sumValues() {
-      const sumValuesInfo = valueSelectInfo.reduce((acc, currentValue) => acc + currentValue, 0);
+      const sumValuesInfo = valueSelectInfo.reduce(
+        (acc, currentValue) => acc + currentValue,
+        0
+      );
       const totalValueInfo = sumValuesInfo * quantityValue;
       setTotalValue(totalValueInfo);
     }
-    sumValues();
+    // Chamando função para calcular o tempo de entrega e atualizar o estado base na quantidade de itens
+    const calculatedTimeDelivery = timeDeliveryFunction(quantityValue);
+    setTimeDeliveryValue(calculatedTimeDelivery)
+    sumValues()
   }, [valueSelectInfo, quantityValue]);
 
   const contextValue: DataProps = {
@@ -83,17 +101,10 @@ export function DataContextProvider({ children }: ContextProps) {
     pedidosData,
     activeTab,
     setActiveTab,
+    timeDeliveryValue,
   };
 
-  useEffect(()=>{
-    console.log('data info', dataSelectInfo)
-    console.log('value', valueSelectInfo)
-  },[dataSelectInfo, valueSelectInfo])
-
-  
   return (
-    <DataContext.Provider value={contextValue}>
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>
   );
 }
