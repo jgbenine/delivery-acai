@@ -10,7 +10,7 @@ interface CheckboxProps {
   name: string;
   value: number;
   idValue: string;
-  icon: ReactNode;
+  icon: JSX.Element;
   onChange: (event: React.ChangeEvent<HTMLInputElement>, value: number) => void;
 }
 

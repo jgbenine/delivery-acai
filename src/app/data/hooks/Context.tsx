@@ -85,11 +85,6 @@ export function DataContextProvider({ children }: ContextProps) {
     setActiveTab,
   };
 
-  useEffect(()=>{
-    console.log('data info', dataSelectInfo)
-    console.log('value', valueSelectInfo)
-  },[dataSelectInfo, valueSelectInfo])
-
   
   return (
     <DataContext.Provider value={contextValue}>
