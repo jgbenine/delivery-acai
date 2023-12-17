@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, ReactNode, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { createContext, ReactNode, useContext, useState, Dispatch, SetStateAction, useEffect } from 'react';
 import { fetch } from "../api/axios";
 import { DataApiSchema } from "../api/schema";
 
@@ -85,7 +85,11 @@ export function DataContextProvider({ children }: ContextProps) {
     setActiveTab,
   };
 
-  
+  useEffect(()=>{
+    console.log('data info', dataSelectInfo)
+    console.log('value', valueSelectInfo)
+  },[dataSelectInfo, valueSelectInfo])
+
   return (
     <DataContext.Provider value={contextValue}>
       {children}
