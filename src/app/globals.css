@@ -3,6 +3,7 @@
   --border-radius: 12px;
   --greenDefault: #33FF3C;
   --purpleAcai: #572A62;
+  --purpleMed: #804b8e;
   --whiteGray: #d4d5da;
   --black: #000000;
   --grayDefault: #858992;
@@ -55,3 +56,34 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: white;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--purpleLight);
+  cursor: pointer;
+}
+
+
+//SVG
+
+path{
+  background: transparent;
+  border: 2px solid red;
+
+}
+
+.loading > path{
+  fill: red;
+}
+
