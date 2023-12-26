@@ -75,3 +75,15 @@ input[type='radio'] {
 }
 
 
+//SVG
+
+path{
+  background: transparent;
+  border: 2px solid red;
+
+}
+
+.loading > path{
+  fill: red;
+}
+
