@@ -1,26 +1,27 @@
 .loading{
-  height: 100px;
+  height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  .groupCircle{
-    width: 100%;
-    max-width: 100px;
-    margin: 0 auto;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+}
+.groupCircle{
+  width: 100%;
+  max-width: 100px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .circle{
-    position: absolute;
-    display: flex;
-    list-style: none;
-    border-radius: 50%;
-    background: purple;
-    padding: 7px;
-  }
+.circle{
+  position: absolute;
+  display: flex;
+  list-style: none;
+  border-radius: 50%;
+  background: var(--purpleAcai);
+  padding: 7px;
 }
 
 .circle:nth-child(1){

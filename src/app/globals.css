@@ -30,7 +30,7 @@ a {
   text-decoration: none;
 }
 
-.containerMain {
+.containerDefault {
   display: flex;
   justify-content: center;
   max-width: var(--max-width);

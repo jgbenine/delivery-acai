@@ -43,19 +43,14 @@ export function CardOrder() {
     const { type, checked, value } = event.target;
     const numericValue = parseFloat(value);
 
-    // Verifica se é um radio ou checkbox
     if (type === "radio") {
-      // Se for radio, substitui o valor no array
       setValueSelectInfo([numericValue]);
       setDataSelectInfo([textInfo]);
     } else if (type === "checkbox") {
-      // Se for checkbox, verifica se está marcado ou desmarcado
       if (checked) {
-        // Adiciona valor ao array se estiver marcado
         setValueSelectInfo([...valueSelectInfo, numericValue]);
         setDataSelectInfo([...dataSelectInfo, textInfo]);
       } else {
-        // Remove valor do array se estiver desmarcado
         setValueSelectInfo(
           valueSelectInfo.filter((val) => val !== numericValue)
         );
@@ -65,7 +60,8 @@ export function CardOrder() {
   }
 
   return (
-    <div className="containerMain">
+    <div className="containerDefault">
+      {pedidosData ? (
       <div className={styles.card}>
         {activeTab !== "checkout" ? (
           <div className={styles.container}>
@@ -102,103 +98,89 @@ export function CardOrder() {
                   adicionamos itens a esse copo!
                 </p>
                 <>
-                  {pedidosData ? (
-                    <div>
-                      {pedidosData?.sizes && activeTab === "sizes" && (
-                        <>
-                          <IntroSelectProdutc
-                            labelText="Selecione o tamanho"
-                            descriptionOption="Escolha pelo menos um tamanho."
-                            stepOption="1/3"
+                  {pedidosData?.sizes && activeTab === "sizes" && (
+                    <>
+                      <IntroSelectProdutc
+                        labelText="Selecione o tamanho"
+                        descriptionOption="Escolha pelo menos um tamanho."
+                        stepOption="1/3"
+                      />
+                      <form className={styles.selectionsForm}>
+                        {pedidosData.sizes.options.map((size, index) => (
+                          <Radio
+                            key={index}
+                            index={index}
+                            htmlFor={size}
+                            contentText={size}
+                            price={pedidosData.sizes.prices[index]}
+                            name="size"
+                            idValue={size}
+                            value={pedidosData.sizes.prices[index]}
+                            onChange={(event) => handleValuesInput(event, size)}
                           />
-                          <form className={styles.selectionsForm}>
-                            {pedidosData.sizes.options.map((size, index) => (
-                              <Radio
-                                key={index}
-                                index={index}
-                                htmlFor={size}
-                                contentText={size}
-                                price={pedidosData.sizes.prices[index]}
-                                name="size"
-                                idValue={size}
-                                value={pedidosData.sizes.prices[index]}
-                                onChange={(event) =>
-                                  handleValuesInput(event, size)
-                                }
-                              />
-                            ))}
-                          </form>
-                        </>
-                      )}
-                      {pedidosData?.fruits && activeTab === "fruits" && (
-                        <>
-                          <IntroSelectProdutc
-                            labelText="Escolha suas frutas"
-                            descriptionOption="Selecione até três opções."
-                            stepOption="2/3"
+                        ))}
+                      </form>
+                    </>
+                  )}
+                  {pedidosData?.fruits && activeTab === "fruits" && (
+                    <>
+                      <IntroSelectProdutc
+                        labelText="Escolha suas frutas"
+                        descriptionOption="Selecione até três opções."
+                        stepOption="2/3"
+                      />
+                      <form className={styles.selectionsForm}>
+                        {pedidosData.fruits.options.map((fruit, index) => (
+                          <Checkbox
+                            key={index}
+                            index={index}
+                            htmlFor={fruit}
+                            contentText={fruit}
+                            price={pedidosData.fruits.prices[index]}
+                            name={`fruit_${index}`}
+                            idValue={fruit}
+                            value={pedidosData.fruits.prices[index]}
+                            icon={iconesArray[index]}
+                            onChange={(event) =>
+                              handleValuesInput(event, fruit)
+                            }
                           />
-                          <form className={styles.selectionsForm}>
-                            {pedidosData.fruits.options.map((fruit, index) => (
-                              <Checkbox
-                                key={index}
-                                index={index}
-                                htmlFor={fruit}
-                                contentText={fruit}
-                                price={pedidosData.fruits.prices[index]}
-                                name={`fruit_${index}`}
-                                idValue={fruit}
-                                value={pedidosData.fruits.prices[index]}
-                                icon={iconesArray[index]}
-                                onChange={(event) =>
-                                  handleValuesInput(event, fruit)
-                                }
-                              />
-                            ))}
-                          </form>
-                        </>
-                      )}
-                      {pedidosData?.complements &&
-                        activeTab === "complements" && (
-                          <>
-                            <IntroSelectProdutc
-                              labelText="Escolha os complementos."
-                              descriptionOption="Escolha até três opções."
-                              stepOption="3/3"
+                        ))}
+                      </form>
+                    </>
+                  )}
+                  {pedidosData?.complements && activeTab === "complements" && (
+                    <>
+                      <IntroSelectProdutc
+                        labelText="Escolha os complementos."
+                        descriptionOption="Escolha até três opções."
+                        stepOption="3/3"
+                      />
+                      <form className={styles.selectionsForm}>
+                        {pedidosData.complements.options.map(
+                          (complement, index) => (
+                            <Checkbox
+                              key={index}
+                              index={index}
+                              htmlFor={complement}
+                              contentText={complement}
+                              price={pedidosData.complements.prices[index]}
+                              name={`complement_${index}`}
+                              idValue={complement}
+                              value={pedidosData.complements.prices[index]}
+                              icon={
+                                iconesArray[
+                                  index + Object.values(iconesFruit).length
+                                ]
+                              }
+                              onChange={(event) =>
+                                handleValuesInput(event, complement)
+                              }
                             />
-                            <form className={styles.selectionsForm}>
-                              {pedidosData.complements.options.map(
-                                (complement, index) => (
-                                  <Checkbox
-                                    key={index}
-                                    index={index}
-                                    htmlFor={complement}
-                                    contentText={complement}
-                                    price={
-                                      pedidosData.complements.prices[index]
-                                    }
-                                    name={`complement_${index}`}
-                                    idValue={complement}
-                                    value={
-                                      pedidosData.complements.prices[index]
-                                    }
-                                    icon={
-                                      iconesArray[
-                                        index +
-                                          Object.values(iconesFruit).length
-                                      ]
-                                    }
-                                    onChange={(event) =>
-                                      handleValuesInput(event, complement)
-                                    }
-                                  />
-                                )
-                              )}
-                            </form>
-                          </>
+                          )
                         )}
-                    </div>
-                  ) : (
-                    <Loading />
+                      </form>
+                    </>
                   )}
                 </>
               </article>
@@ -209,6 +191,7 @@ export function CardOrder() {
           <Checkout />
         )}
       </div>
+      ): <Loading />}
     </div>
   );
 }
