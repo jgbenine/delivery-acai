@@ -6,9 +6,8 @@
 }
 
 .container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   width: 100%;
 }
@@ -91,6 +90,8 @@
   }
 
   .container {
+    display: flex;
+    align-items: center;
     flex-direction: row;
     justify-content: flex-end;
   }

@@ -15,5 +15,5 @@ export function timeDeliveryFunction(multiplier: number): string {
     return calcFinal;
   }
 
-  return deliveryTimesCalculated(); // Retorna o valor calculado
+  return deliveryTimesCalculated();
 }

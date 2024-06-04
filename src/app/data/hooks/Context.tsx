@@ -64,7 +64,6 @@ export function DataContextProvider({ children }: ContextProps) {
       try {
         const response = await fetch.get("/pedido");
         const data = response.data;
-        console.log(data);
         const validatedDataApi = DataApiSchema.parse(data[0]);
         setPedidosData(validatedDataApi);
       } catch (error) {
@@ -83,7 +82,7 @@ export function DataContextProvider({ children }: ContextProps) {
       const totalValueInfo = sumValuesInfo * quantityValue;
       setTotalValue(totalValueInfo);
     }
-    // Chamando função para calcular o tempo de entrega e atualizar o estado base na quantidade de itens
+    
     const calculatedTimeDelivery = timeDeliveryFunction(quantityValue);
     setTimeDeliveryValue(calculatedTimeDelivery)
     sumValues()

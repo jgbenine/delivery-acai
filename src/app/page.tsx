@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import styles from './page.module.css';
 import { Header } from "./ui/partials/Header";
 import { CardOrder } from "./ui/partials/CardOrder";
 
